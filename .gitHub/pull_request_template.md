@@ -1,27 +1,37 @@
-### **Resumen**
+### **Brief description**
 
-Resumen de los cambios realizados
+Please include a summary of the changes and the related issue. Please also include relevant motivation and context. List any dependencies that are required for this change.
 
-### **Tipo de cambio**
 
-- [ ] Bug fix (cambio que arregla un problema) 
-- [ ] New feature (cambio que añade funcionalidad)
-- [ ] Breaking change (arreglo o función que podría resultar en que otras funciones no se comporten como se espera)
-- [ ] Este cambio requiere un cambio en la documentación 
+### **Type of change**
 
-### **Descripción extendida**
+- [ ] Bug fix (non-breaking change which fixes an issue)
+- [ ] New feature (non-breaking change which adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] This change requires a documentation update
+- [ ] It is a change in documentation
+- [ ] This change modifies dependencies of the project
 
-Aquí la descripción completa del cambio realizado
 
-### **¿Cómo ha sido testeado?**
+### **Extended description**
 
-Descripción de los tests realizados para comprobar los cambios. Escribe también las instrucciones para que puedan reproducirse.
+Please describe the description of the change in detail
+
+### **How Has This Been Tested?
+
+Please describe the tests that you ran to verify your changes. Provide instructions so we can reproduce. Please also list any relevant details for your test configuration
 
 - [ ] Test A
 - [ ] Test B
 
 
-### **Lista para hacer**
+### **Checklist:**
 
-- [ ] Crear el archivo AGENTS.md
-- [ ] Terminar el archivo AGENTS.md
+- [ ] My code follows the style guidelines of this project
+- [ ] I have performed a self-review of my code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes
+- [ ] Any dependent changes have been merged and published in downstream modules
