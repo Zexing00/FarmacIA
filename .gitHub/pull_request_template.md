@@ -1,0 +1,27 @@
+### **Resumen**
+
+Resumen de los cambios realizados
+
+### **Tipo de cambio**
+
+- [ ] Bug fix (cambio que arregla un problema) 
+- [ ] New feature (cambio que añade funcionalidad)
+- [ ] Breaking change (arreglo o función que podría resultar en que otras funciones no se comporten como se espera)
+- [ ] Este cambio requiere un cambio en la documentación 
+
+### **Descripción extendida**
+
+Aquí la descripción completa del cambio realizado
+
+### **¿Cómo ha sido testeado?**
+
+Descripción de los tests realizados para comprobar los cambios. Escribe también las instrucciones para que puedan reproducirse.
+
+- [ ] Test A
+- [ ] Test B
+
+
+### **Lista para hacer**
+
+- [ ] Crear el archivo AGENTS.md
+- [ ] Terminar el archivo AGENTS.md
