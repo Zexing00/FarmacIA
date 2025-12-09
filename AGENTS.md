@@ -6,6 +6,8 @@
 ## Dev environment tips
 - Use of ORMs is forbiden
 - Must use DAOs
+- Programming language will be Java.
+- OpenJDK 21.0.9 2025-10-21
 - Working on Android Studio 21.0.7
 
 ## PR instructions
