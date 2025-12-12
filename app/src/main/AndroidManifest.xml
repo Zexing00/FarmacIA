@@ -22,6 +22,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false"
+            android:label="Registro"
+            android:theme="@style/Theme.FarmacIA" />
     </application>
 
 </manifest>

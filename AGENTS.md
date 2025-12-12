@@ -10,13 +10,17 @@
   - The user can also search medications with a search bar, and a list of matching medications will be shown.
     
 ## Restrictions
-  - Use of ORMs is forbidden
-  - Must use DAOs for database access
-  - Each activity may have its own design file in XML
-  - Add libraries when needed
-  - Every activity must have it´s own XML file in layout
+- Use of ORMs is forbidden
+- Every activity should have its own XML file in layout
+- Must use DAOs for database access
+- Add libraries when needed
+- Programming language will be Java.
+
 ## Meta instructions
-  - You must iterate and keep iterating until the problem is completely solved.
-  - Before applying code changes, you must identify a sequence of specific, simple, and verifiable steps for the problem you have been given.
-  - Before editing, review the relevant files to ensure that you have the full context of the problem.
-  - Only make code changes when there is absolute confidence that they solve the problem.
+- You must iterate and keep iterating until the problem is completely solved.
+- Before applying code changes, you must identify a sequence of specific, simple, and verifiable steps for the problem you have been given.
+- Before editing, review the relevant files to ensure that you have the full context of the problem.
+- Only make code changes when there is absolute confidence that they solve the problem.
+  
+
+

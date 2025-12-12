@@ -63,6 +63,24 @@ public class UsuarioDAO {
         return null;
     }
 
+    public boolean existeUsuario(String username) {
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_USUARIOS,
+                new String[]{DatabaseHelper.COLUMN_ID},
+                DatabaseHelper.COLUMN_NOMBRE_USUARIO + " = ?",
+                new String[]{username},
+                null,
+                null,
+                null
+        );
+        
+        boolean existe = (cursor != null && cursor.getCount() > 0);
+        if (cursor != null) {
+            cursor.close();
+        }
+        return existe;
+    }
+
     public long registrarUsuario(String nombre, String contrasena, boolean esAdmin) {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.COLUMN_NOMBRE_USUARIO, nombre);
