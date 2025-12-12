@@ -1,5 +1,6 @@
 package com.example.farmacia;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -30,6 +31,7 @@ public class SearchMedicinesActivity extends AppCompatActivity {
     private RecyclerView rvSearchResults;
     private ProgressBar progressBar;
     private CimaService cimaService;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,12 @@ public class SearchMedicinesActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
 
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
+
+        // Recuperar ID de usuario
+        Intent intent = getIntent();
+        if (intent != null) {
+            userId = intent.getIntExtra("USER_ID", -1);
+        }
 
         cimaService = ApiClient.getCimaService();
 
@@ -81,7 +89,8 @@ public class SearchMedicinesActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     CimaResponse cimaResponse = response.body();
                     if (cimaResponse.getResultados() != null && !cimaResponse.getResultados().isEmpty()) {
-                        CimaAdapter adapter = new CimaAdapter(SearchMedicinesActivity.this, cimaResponse.getResultados());
+                        // Pasamos el contexto, la lista y el userId al adaptador
+                        CimaAdapter adapter = new CimaAdapter(SearchMedicinesActivity.this, cimaResponse.getResultados(), userId);
                         rvSearchResults.setAdapter(adapter);
                     } else {
                         Toast.makeText(SearchMedicinesActivity.this, "No se encontraron resultados", Toast.LENGTH_SHORT).show();

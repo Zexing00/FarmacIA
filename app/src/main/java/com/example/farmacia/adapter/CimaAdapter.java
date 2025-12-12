@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farmacia.R;
+import com.example.farmacia.dao.PastilleroDAO;
 import com.example.farmacia.model.cima.CimaMedicamento;
 
 import java.util.List;
@@ -22,10 +23,14 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
 
     private List<CimaMedicamento> listaMedicamentos;
     private Context context;
+    private int userId;
+    private PastilleroDAO pastilleroDAO;
 
-    public CimaAdapter(Context context, List<CimaMedicamento> listaMedicamentos) {
+    public CimaAdapter(Context context, List<CimaMedicamento> listaMedicamentos, int userId) {
         this.context = context;
         this.listaMedicamentos = listaMedicamentos;
+        this.userId = userId;
+        this.pastilleroDAO = new PastilleroDAO(context);
     }
 
     @NonNull
@@ -52,6 +57,19 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
         } else {
             holder.btnVerProspecto.setVisibility(View.GONE);
         }
+
+        // Configurar botón "Añadir al Pastillero"
+        holder.btnAddToPillbox.setOnClickListener(v -> {
+            pastilleroDAO.open();
+            boolean exito = pastilleroDAO.agregarMedicamentoUsuario(userId, medicamento.getNombre(), urlProspecto);
+            pastilleroDAO.close();
+
+            if (exito) {
+                Toast.makeText(context, "Añadido al pastillero", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(context, "Ya está en tu pastillero o error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -64,6 +82,7 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
         TextView tvLaboratorio;
         TextView tvNRegistro;
         Button btnVerProspecto;
+        Button btnAddToPillbox;
 
         public CimaViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,6 +90,7 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
             tvLaboratorio = itemView.findViewById(R.id.tvCimaLab);
             tvNRegistro = itemView.findViewById(R.id.tvCimaReg);
             btnVerProspecto = itemView.findViewById(R.id.btnCimaProspecto);
+            btnAddToPillbox = itemView.findViewById(R.id.btnAddToPillbox);
         }
     }
 }

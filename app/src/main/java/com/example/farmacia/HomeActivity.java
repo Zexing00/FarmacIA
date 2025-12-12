@@ -49,6 +49,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, SearchMedicinesActivity.class);
+                intent.putExtra("USER_ID", userId); // Pasamos el ID del usuario aquí también
                 startActivity(intent);
             }
         });
