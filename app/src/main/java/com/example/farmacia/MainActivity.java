@@ -47,7 +47,13 @@ public class MainActivity extends AppCompatActivity {
                     if (usuario != null) {
                         String tipo = (usuario instanceof Administrador) ? "Administrador" : "Usuario";
                         Toast.makeText(MainActivity.this, "Bienvenido " + tipo + ": " + usuario.getNombreUsuario(), Toast.LENGTH_LONG).show();
-                        // Aquí iríamos a la siguiente actividad
+                        
+                        // Iniciar HomeActivity
+                        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                        intent.putExtra("USER_NAME", usuario.getNombreUsuario());
+                        intent.putExtra("USER_ID", usuario.getId());
+                        startActivity(intent);
+                        finish(); // Opcional: Cerrar MainActivity para que al dar atrás no vuelva al login
                     } else {
                         Toast.makeText(MainActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                     }
