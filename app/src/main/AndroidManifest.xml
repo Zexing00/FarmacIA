@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -26,6 +28,21 @@
             android:name=".RegisterActivity"
             android:exported="false"
             android:label="Registro"
+            android:theme="@style/Theme.FarmacIA" />
+        <activity
+            android:name=".HomeActivity"
+            android:exported="false"
+            android:label="FarmacIA Home"
+            android:theme="@style/Theme.FarmacIA" />
+        <activity
+            android:name=".PillboxActivity"
+            android:exported="false"
+            android:label="Mi Pastillero"
+            android:theme="@style/Theme.FarmacIA" />
+        <activity
+            android:name=".SearchMedicinesActivity"
+            android:exported="false"
+            android:label="Consultar Medicamentos"
             android:theme="@style/Theme.FarmacIA" />
     </application>
 

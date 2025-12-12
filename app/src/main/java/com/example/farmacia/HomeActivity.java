@@ -39,16 +39,17 @@ public class HomeActivity extends AppCompatActivity {
         btnPillbox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Abriendo Pastillero...", Toast.LENGTH_SHORT).show();
-                // TODO: Navegar a la actividad de Pastillero
+                Intent intent = new Intent(HomeActivity.this, PillboxActivity.class);
+                intent.putExtra("USER_ID", userId);
+                startActivity(intent);
             }
         });
 
         btnMedications.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "Abriendo Medicamentos...", Toast.LENGTH_SHORT).show();
-                // TODO: Navegar a la actividad de Medicamentos
+                Intent intent = new Intent(HomeActivity.this, SearchMedicinesActivity.class);
+                startActivity(intent);
             }
         });
     }
