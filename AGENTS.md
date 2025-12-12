@@ -1,14 +1,14 @@
-# Sample AGENTS.md file not definitive version 
+# Sample AGENTS.md 
 
-## Build overview (mas especifico)
-- We are developing an Android application in Java.
-- When the user opens the application, they will see a screen with two buttons: one for logging in and another for registering. The user’s data will be stored in a table in an SQL database.
-- Once they have logged in or registered, they will be taken to the next screen, where they will have two buttons: one to view their personal pillbox, and another to query the SQL database with a large list of registered medications.
-- The model consists of a digital “pharmacy”; the user can consult the leaflet/information for any pill or medication they want.
-- Each user has their own digital “pill box”, where they can enter the medication they are currently taking.
-- A user can grant permission to another user to edit their pill box; the user with extra permissions is then treated as an Admin.
-- The user can also search medications with a search bar, and a list of matching medications will be shown.
-
+## Build overview 
+  - We are developing an Android application in Java.
+  - When the user opens the application, they will see a screen with two buttons: one for logging in and another for registering. The user’s data will be stored in a table in an SQL database.
+  - Once they have logged in or registered, they will be taken to the next screen, where they will have two buttons: one to view their personal pillbox, and another to query the SQL database with a large list of registered   medications.
+  - The model consists of a digital “pharmacy”; the user can consult the leaflet/information for any pill or medication they want.
+  - Each user has their own digital “pill box”, where they can enter the medication they are currently taking.
+  - A user can grant permission to another user to edit their pill box; the user with extra permissions is then treated as an Admin.
+  - The user can also search medications with a search bar, and a list of matching medications will be shown.
+    
 ## Restrictions
 - Use of ORMs is forbidden
 - Every activity should have its own XML file in layout
