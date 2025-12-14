@@ -4,11 +4,24 @@ public class Medicamento {
     private int id;
     private String nombre;
     private String prospecto;
+    
+    // Campos específicos del pastillero
+    private String fechaCaducidad;
+    private String dosisSemanal;
 
     public Medicamento(int id, String nombre, String prospecto) {
         this.id = id;
         this.nombre = nombre;
         this.prospecto = prospecto;
+    }
+
+    // Constructor completo
+    public Medicamento(int id, String nombre, String prospecto, String fechaCaducidad, String dosisSemanal) {
+        this.id = id;
+        this.nombre = nombre;
+        this.prospecto = prospecto;
+        this.fechaCaducidad = fechaCaducidad;
+        this.dosisSemanal = dosisSemanal;
     }
 
     public int getId() {
@@ -33,5 +46,21 @@ public class Medicamento {
 
     public void setProspecto(String prospecto) {
         this.prospecto = prospecto;
+    }
+
+    public String getFechaCaducidad() {
+        return fechaCaducidad;
+    }
+
+    public void setFechaCaducidad(String fechaCaducidad) {
+        this.fechaCaducidad = fechaCaducidad;
+    }
+
+    public String getDosisSemanal() {
+        return dosisSemanal;
+    }
+
+    public void setDosisSemanal(String dosisSemanal) {
+        this.dosisSemanal = dosisSemanal;
     }
 }
