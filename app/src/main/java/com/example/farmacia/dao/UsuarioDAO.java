@@ -89,4 +89,25 @@ public class UsuarioDAO {
 
         return database.insert(DatabaseHelper.TABLE_USUARIOS, null, values);
     }
+
+    // Nuevo método para obtener ID por nombre de usuario
+    public int obtenerIdPorNombre(String username) {
+        Cursor cursor = database.query(
+                DatabaseHelper.TABLE_USUARIOS,
+                new String[]{DatabaseHelper.COLUMN_ID},
+                DatabaseHelper.COLUMN_NOMBRE_USUARIO + " = ?",
+                new String[]{username},
+                null, null, null
+        );
+
+        int id = -1;
+        if (cursor != null && cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_ID);
+            if (idIndex != -1) {
+                id = cursor.getInt(idIndex);
+            }
+            cursor.close();
+        }
+        return id;
+    }
 }
