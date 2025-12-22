@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    app:cardCornerRadius="8dp"
-    app:cardElevation="4dp">
+    app:cardCornerRadius="12dp"
+    app:cardElevation="4dp"
+    app:cardBackgroundColor="@color/white">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,7 +19,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Nombre Medicamento"
-            android:textSize="18sp"
+            android:textColor="@color/primary_dark_blue"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
@@ -27,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Prospecto..."
+            android:textColor="@color/gray_text"
             android:textSize="14sp"
             android:visibility="gone"/>
 
@@ -35,15 +38,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Ver Prospecto (PDF)"
-            android:layout_marginTop="8dp"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/accent_yellow"
+            style="@style/Widget.MaterialComponents.Button"
             android:visibility="gone"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="#EEEEEE"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="12dp"
             android:baselineAligned="false">
 
             <TextView
@@ -52,8 +63,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Dosis: No definida"
-                android:textColor="@color/teal_700"
-                android:textSize="12sp"
+                android:textColor="@color/secondary_blue"
+                android:textSize="13sp"
                 android:textStyle="italic"/>
 
             <TextView
@@ -63,19 +74,10 @@
                 android:layout_weight="1"
                 android:gravity="end"
                 android:text="Caducidad: --/--"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="12sp"
-                android:textStyle="italic"/>
+                android:textColor="@color/error_red"
+                android:textSize="13sp"
+                android:textStyle="bold"/>
         </LinearLayout>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Toca para gestionar"
-            android:gravity="center"
-            android:textSize="10sp"
-            android:textColor="@android:color/darker_gray"
-            android:layout_marginTop="8dp"/>
 
     </LinearLayout>
 

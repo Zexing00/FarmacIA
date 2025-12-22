@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,6 +23,7 @@ import com.example.farmacia.dao.PastilleroDAO;
 import com.example.farmacia.dao.UsuarioDAO;
 import com.example.farmacia.model.Medicamento;
 import com.example.farmacia.model.Usuario;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -115,30 +119,36 @@ public class HomeActivity extends AppCompatActivity {
         Date fechaLimite = proximaSemana.getTime();
 
         StringBuilder aviso = new StringBuilder();
+        int contador = 0;
         for (Medicamento m : medicamentos) {
             String fechaStr = m.getFechaCaducidad();
             if (fechaStr != null && !fechaStr.isEmpty()) {
                 try {
                     Date fechaCad = sdf.parse(fechaStr);
                     if (fechaCad != null && fechaCad.before(fechaLimite)) {
-                        aviso.append("- ").append(m.getNombre()).append("\n");
+                        aviso.append(" • ").append(m.getNombre()).append("\n");
+                        contador++;
                     }
                 } catch (ParseException ignored) {}
             }
         }
 
-        if (aviso.length() > 0) {
-            new AlertDialog.Builder(this)
-                    .setTitle("⚠️ Alerta de Caducidad")
-                    .setMessage("Los siguientes medicamentos caducan en menos de una semana:\n\n" + aviso.toString())
+        if (contador > 0) {
+            SpannableString title = new SpannableString("⚠️ Alerta de Caducidad");
+            title.setSpan(new ForegroundColorSpan(Color.parseColor("#D32F2F")), 0, title.length(), 0);
+
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle(title)
+                    .setMessage("Los siguientes medicamentos caducan pronto:\n\n" + aviso.toString())
                     .setPositiveButton("Entendido", null)
+                    .setIcon(android.R.drawable.ic_dialog_alert)
                     .show();
         }
     }
 
     private void mostrarOpcionesAcceso() {
         String[] opciones = {"Dar permiso a nuevo cuidador", "Quitar permiso a cuidador existente"};
-        new AlertDialog.Builder(this)
+        new MaterialAlertDialogBuilder(this)
                 .setTitle("Gestión de Acceso")
                 .setItems(opciones, (dialog, which) -> {
                     if (which == 0) mostrarDialogoCompartirAcceso();
@@ -147,8 +157,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void mostrarDialogoCompartirAcceso() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Dar permiso a un cuidador");
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
+        builder.setTitle("Nuevo Cuidador");
         builder.setMessage("Introduce el nombre de usuario de tu cuidador:");
 
         final EditText input = new EditText(this);
@@ -191,8 +201,8 @@ public class HomeActivity extends AppCompatActivity {
         String[] nombres = new String[cuidadores.size()];
         for (int i = 0; i < cuidadores.size(); i++) nombres[i] = cuidadores.get(i).getNombreUsuario();
 
-        new AlertDialog.Builder(this)
-                .setTitle("Seleccionar cuidador para quitar acceso")
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Quitar acceso")
                 .setItems(nombres, (dialog, which) -> {
                     Usuario c = cuidadores.get(which);
                     cuidadorDAO.eliminarCuidador(userId, c.getId());
@@ -207,7 +217,7 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("Seleccionar Paciente");
 
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);

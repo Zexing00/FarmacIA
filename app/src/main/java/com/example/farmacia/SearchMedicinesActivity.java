@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -27,7 +27,7 @@ import retrofit2.Response;
 public class SearchMedicinesActivity extends AppCompatActivity {
 
     private EditText etSearchQuery;
-    private Button btnSearch;
+    private ImageButton btnSearch; // Cambiado de Button a ImageButton
     private RecyclerView rvSearchResults;
     private ProgressBar progressBar;
     private CimaService cimaService;
@@ -80,7 +80,7 @@ public class SearchMedicinesActivity extends AppCompatActivity {
         }
 
         progressBar.setVisibility(View.VISIBLE);
-        rvSearchResults.setAdapter(null); // Limpiar lista anterior
+        rvSearchResults.setAdapter(null);
 
         cimaService.buscarMedicamentos(query).enqueue(new Callback<CimaResponse>() {
             @Override
@@ -89,7 +89,6 @@ public class SearchMedicinesActivity extends AppCompatActivity {
                 if (response.isSuccessful() && response.body() != null) {
                     CimaResponse cimaResponse = response.body();
                     if (cimaResponse.getResultados() != null && !cimaResponse.getResultados().isEmpty()) {
-                        // Pasamos el contexto, la lista y el userId al adaptador
                         CimaAdapter adapter = new CimaAdapter(SearchMedicinesActivity.this, cimaResponse.getResultados(), userId);
                         rvSearchResults.setAdapter(adapter);
                     } else {
