@@ -55,6 +55,15 @@ public class CuidadorDAO {
     }
 
     /**
+     * Elimina el permiso de un cuidador sobre un paciente.
+     */
+    public boolean eliminarCuidador(int idPaciente, int idCuidador) {
+        return database.delete(DatabaseHelper.TABLE_CUIDADORES,
+                DatabaseHelper.COLUMN_CUID_PACIENTE_ID + " = ? AND " + DatabaseHelper.COLUMN_CUID_CUIDADOR_ID + " = ?",
+                new String[]{String.valueOf(idPaciente), String.valueOf(idCuidador)}) > 0;
+    }
+
+    /**
      * Obtiene la lista de usuarios (pacientes) que han autorizado al usuario actual como cuidador.
      */
     public List<Usuario> obtenerPacientesAsignados(int idCuidador) {
@@ -77,12 +86,42 @@ public class CuidadorDAO {
                 if (idIndex != -1 && nombreIndex != -1) {
                     int id = cursor.getInt(idIndex);
                     String nombre = cursor.getString(nombreIndex);
-                    // Para simplificar, usamos la clase Usuario aunque no tengamos la contraseña aquí
                     pacientes.add(new Usuario(id, nombre, ""));
                 }
             } while (cursor.moveToNext());
             cursor.close();
         }
         return pacientes;
+    }
+
+    /**
+     * Obtiene la lista de cuidadores que tienen acceso al pastillero del paciente actual.
+     */
+    public List<Usuario> obtenerCuidadoresPorPaciente(int idPaciente) {
+        List<Usuario> cuidadores = new ArrayList<>();
+
+        String query = "SELECT u." + DatabaseHelper.COLUMN_ID + ", " +
+                       "u." + DatabaseHelper.COLUMN_NOMBRE_USUARIO + " " +
+                       "FROM " + DatabaseHelper.TABLE_USUARIOS + " u " +
+                       "INNER JOIN " + DatabaseHelper.TABLE_CUIDADORES + " c " +
+                       "ON u." + DatabaseHelper.COLUMN_ID + " = c." + DatabaseHelper.COLUMN_CUID_CUIDADOR_ID + " " +
+                       "WHERE c." + DatabaseHelper.COLUMN_CUID_PACIENTE_ID + " = ?";
+
+        Cursor cursor = database.rawQuery(query, new String[]{String.valueOf(idPaciente)});
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int idIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_ID);
+            int nombreIndex = cursor.getColumnIndex(DatabaseHelper.COLUMN_NOMBRE_USUARIO);
+
+            do {
+                if (idIndex != -1 && nombreIndex != -1) {
+                    int id = cursor.getInt(idIndex);
+                    String nombre = cursor.getString(nombreIndex);
+                    cuidadores.add(new Usuario(id, nombre, ""));
+                }
+            } while (cursor.moveToNext());
+            cursor.close();
+        }
+        return cuidadores;
     }
 }
