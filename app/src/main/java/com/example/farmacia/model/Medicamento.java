@@ -4,8 +4,6 @@ public class Medicamento {
     private int id;
     private String nombre;
     private String prospecto;
-    
-    // Campos específicos del pastillero (pueden ser nulos si viene de una búsqueda general)
     private String fechaCaducidad;
     private String dosisSemanal;
 
@@ -15,7 +13,6 @@ public class Medicamento {
         this.prospecto = prospecto;
     }
 
-    // Constructor completo
     public Medicamento(int id, String nombre, String prospecto, String fechaCaducidad, String dosisSemanal) {
         this.id = id;
         this.nombre = nombre;

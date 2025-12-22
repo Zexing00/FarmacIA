@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:padding="20dp"
     tools:context=".HomeActivity">
 
     <TextView
@@ -12,37 +12,90 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bienvenido"
-        android:textSize="24sp"
+        android:textColor="@color/primary_dark_blue"
+        android:textSize="28sp"
         android:textStyle="bold"
-        android:layout_marginTop="32dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnPillbox"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Mi Pastillero"
-        android:minHeight="60dp"
-        android:textSize="18sp"
-        android:layout_marginTop="64dp"
+        android:layout_height="80dp"
+        android:text="💊 Mi Pastillero"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:backgroundTint="@color/primary_blue"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvWelcome"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintTop_toBottomOf="@+id/tvWelcome" />
 
     <Button
         android:id="@+id/btnMedications"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Consultar Medicamentos"
-        android:minHeight="60dp"
+        android:layout_height="80dp"
+        android:text="🔍 Buscar Medicamentos"
+        android:textAllCaps="false"
         android:textSize="18sp"
-        android:layout_marginTop="32dp"
+        android:textColor="@color/primary_dark_blue"
+        android:backgroundTint="@color/accent_yellow"
+        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnPillbox"
-        app:layout_constraintWidth_percent="0.8" />
+        app:layout_constraintTop_toBottomOf="@+id/btnPillbox" />
+
+    <TextView
+        android:id="@+id/tvAdminSection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gestión de Cuidadores"
+        android:textColor="@color/primary_dark_blue"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginTop="60dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnMedications" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/primary_blue"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/tvAdminSection"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/divider">
+
+        <Button
+            android:id="@+id/btnShareAccess"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Dar Acceso"
+            android:textAllCaps="false"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/primary_blue"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+        <Button
+            android:id="@+id/btnManagePatients"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Mis Pacientes"
+            android:textAllCaps="false"
+            android:layout_marginStart="8dp"
+            android:textColor="@color/primary_blue"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
