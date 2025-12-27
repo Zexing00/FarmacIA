@@ -69,7 +69,6 @@ public class PastilleroDAO {
     public boolean agregarMedicamentoUsuario(int usuarioId, String nombreMedicamento, String prospecto) {
         long medId = -1;
 
-        // 1. Verificar si existe en MEDICAMENTOS
         Cursor cursor = database.query(
                 DatabaseHelper.TABLE_MEDICAMENTOS,
                 new String[]{DatabaseHelper.COLUMN_MED_ID},
@@ -86,7 +85,6 @@ public class PastilleroDAO {
             cursor.close();
         }
 
-        // 2. Si no existe, insertar
         if (medId == -1) {
             ContentValues medValues = new ContentValues();
             medValues.put(DatabaseHelper.COLUMN_MED_NOMBRE, nombreMedicamento);
@@ -98,7 +96,6 @@ public class PastilleroDAO {
             return false;
         }
 
-        // 3. Verificar si ya está en PASTILLERO
         Cursor checkCursor = database.query(
                 DatabaseHelper.TABLE_PASTILLERO,
                 new String[]{DatabaseHelper.COLUMN_PAST_ID},
@@ -119,11 +116,9 @@ public class PastilleroDAO {
             return false;
         }
 
-        // 4. Asignar al usuario
         ContentValues pastilleroValues = new ContentValues();
         pastilleroValues.put(DatabaseHelper.COLUMN_PAST_USER_ID, usuarioId);
         pastilleroValues.put(DatabaseHelper.COLUMN_PAST_MED_ID, medId);
-        // Fecha y dosis se iniciarán como null
         
         return database.insert(DatabaseHelper.TABLE_PASTILLERO, null, pastilleroValues) != -1;
     }

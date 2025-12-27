@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "farmacia.db";
-    private static final int DATABASE_VERSION = 3; // Incrementamos versión a 3
+    private static final int DATABASE_VERSION = 4; // Aseguramos versión 4
 
     // Tabla Usuarios
     public static final String TABLE_USUARIOS = "usuarios";
@@ -27,8 +27,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_PAST_ID = "id";
     public static final String COLUMN_PAST_USER_ID = "usuario_id";
     public static final String COLUMN_PAST_MED_ID = "medicamento_id";
-    public static final String COLUMN_PAST_CADUCIDAD = "fecha_caducidad"; // Nuevo
-    public static final String COLUMN_PAST_DOSIS = "dosis_semanal";       // Nuevo
+    public static final String COLUMN_PAST_CADUCIDAD = "fecha_caducidad";
+    public static final String COLUMN_PAST_DOSIS = "dosis_semanal";
+
+    // Nueva Tabla Cuidadores (Relación Paciente - Cuidador)
+    public static final String TABLE_CUIDADORES = "cuidadores";
+    public static final String COLUMN_CUID_ID = "id";
+    public static final String COLUMN_CUID_PACIENTE_ID = "paciente_id";
+    public static final String COLUMN_CUID_CUIDADOR_ID = "cuidador_id";
 
     private static final String TABLE_CREATE_USUARIOS =
             "CREATE TABLE " + TABLE_USUARIOS + " (" +
@@ -56,6 +62,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "FOREIGN KEY(" + COLUMN_PAST_MED_ID + ") REFERENCES " + TABLE_MEDICAMENTOS + "(" + COLUMN_MED_ID + ")" +
             ");";
 
+    private static final String TABLE_CREATE_CUIDADORES =
+            "CREATE TABLE " + TABLE_CUIDADORES + " (" +
+            COLUMN_CUID_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_CUID_PACIENTE_ID + " INTEGER, " +
+            COLUMN_CUID_CUIDADOR_ID + " INTEGER, " +
+            "FOREIGN KEY(" + COLUMN_CUID_PACIENTE_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "), " +
+            "FOREIGN KEY(" + COLUMN_CUID_CUIDADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + ")" +
+            ");";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -65,24 +80,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(TABLE_CREATE_USUARIOS);
         db.execSQL(TABLE_CREATE_MEDICAMENTOS);
         db.execSQL(TABLE_CREATE_PASTILLERO);
+        db.execSQL(TABLE_CREATE_CUIDADORES); // Importante: Crear la nueva tabla
 
         // Datos iniciales
         db.execSQL("INSERT INTO " + TABLE_USUARIOS + " (" + COLUMN_NOMBRE_USUARIO + ", " + COLUMN_CONTRASENA + ", " + COLUMN_ES_ADMIN + ") VALUES ('admin', 'admin', 1);");
         db.execSQL("INSERT INTO " + TABLE_USUARIOS + " (" + COLUMN_NOMBRE_USUARIO + ", " + COLUMN_CONTRASENA + ", " + COLUMN_ES_ADMIN + ") VALUES ('user', 'user', 0);");
+        db.execSQL("INSERT INTO " + TABLE_USUARIOS + " (" + COLUMN_NOMBRE_USUARIO + ", " + COLUMN_CONTRASENA + ", " + COLUMN_ES_ADMIN + ") VALUES ('hijo', '1234', 0);");
 
         db.execSQL("INSERT INTO " + TABLE_MEDICAMENTOS + " (" + COLUMN_MED_NOMBRE + ", " + COLUMN_MED_PROSPECTO + ") VALUES ('Ibuprofeno', 'Tomar cada 8 horas con comida. Antiinflamatorio.');");
         db.execSQL("INSERT INTO " + TABLE_MEDICAMENTOS + " (" + COLUMN_MED_NOMBRE + ", " + COLUMN_MED_PROSPECTO + ") VALUES ('Paracetamol', 'Tomar cada 6-8 horas para el dolor o fiebre.');");
         db.execSQL("INSERT INTO " + TABLE_MEDICAMENTOS + " (" + COLUMN_MED_NOMBRE + ", " + COLUMN_MED_PROSPECTO + ") VALUES ('Amoxicilina', 'Antibiótico. Completar el tratamiento. Tomar cada 12 horas.');");
         
-        // Asignar medicamentos al usuario por defecto
         db.execSQL("INSERT INTO " + TABLE_PASTILLERO + " (" + COLUMN_PAST_USER_ID + ", " + COLUMN_PAST_MED_ID + ", " + COLUMN_PAST_CADUCIDAD + ", " + COLUMN_PAST_DOSIS + ") VALUES (2, 1, '2025-12-31', '3 veces al día');");
         db.execSQL("INSERT INTO " + TABLE_PASTILLERO + " (" + COLUMN_PAST_USER_ID + ", " + COLUMN_PAST_MED_ID + ") VALUES (2, 3);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // En un entorno de producción haríamos una migración ALTER TABLE
-        // Pero aquí para simplificar, borramos y recreamos
+        // En desarrollo simplificado: borrar todo y recrear
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CUIDADORES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PASTILLERO);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_MEDICAMENTOS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);

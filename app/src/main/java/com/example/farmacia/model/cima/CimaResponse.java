@@ -16,6 +16,22 @@ public class CimaResponse {
         this.totalFilas = totalFilas;
     }
 
+    public int getPagina() {
+        return pagina;
+    }
+
+    public void setPagina(int pagina) {
+        this.pagina = pagina;
+    }
+
+    public int getTamanoPagina() {
+        return tamanoPagina;
+    }
+
+    public void setTamanoPagina(int tamanoPagina) {
+        this.tamanoPagina = tamanoPagina;
+    }
+
     public List<CimaMedicamento> getResultados() {
         return resultados;
     }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +33,7 @@ public class PillboxActivity extends AppCompatActivity {
         rvMedications = findViewById(R.id.rvMedications);
         rvMedications.setLayoutManager(new LinearLayoutManager(this));
 
+        // Recuperar ID de usuario
         Intent intent = getIntent();
         if (intent != null) {
             userId = intent.getIntExtra("USER_ID", -1);
@@ -58,6 +58,7 @@ public class PillboxActivity extends AppCompatActivity {
             Toast.makeText(this, "No tienes medicamentos en tu pastillero", Toast.LENGTH_SHORT).show();
         }
 
+        // Aquí estaba el error: Ahora pasamos el listener 'new MedicamentoAdapter.OnItemClickListener() {...}'
         MedicamentoAdapter adapter = new MedicamentoAdapter(lista, new MedicamentoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Medicamento medicamento) {
