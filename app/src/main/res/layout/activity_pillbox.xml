@@ -7,6 +7,17 @@
     android:padding="16dp"
     tools:context=".PillboxActivity">
 
+    <ImageButton
+        android:id="@+id/btnPillboxBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Volver"
+        app:layout_constraintBottom_toBottomOf="@+id/tvPillboxTitle"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvPillboxTitle"
+        app:srcCompat="?attr/homeAsUpIndicator" />
+
     <TextView
         android:id="@+id/tvPillboxTitle"
         android:layout_width="wrap_content"
@@ -14,6 +25,7 @@
         android:text="Mi Pastillero"
         android:textSize="24sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

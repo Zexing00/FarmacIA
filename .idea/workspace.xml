@@ -5,16 +5,6 @@
       <config />
     </shared>
     <layouts>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_background.xml">
-        <config>
-          <theme>@style/Theme.FarmacIA</theme>
-        </config>
-      </layout>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/drawable/ic_launcher_foreground.xml">
-        <config>
-          <theme>@style/Theme.FarmacIA</theme>
-        </config>
-      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml">
         <config>
           <theme>@style/Theme.FarmacIA</theme>
@@ -25,12 +15,17 @@
           <theme>@style/Theme.FarmacIA</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_search_medicines.xml">
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_pillbox.xml">
         <config>
           <theme>@style/Theme.FarmacIA</theme>
         </config>
       </layout>
-      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_medicamento.xml">
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_register.xml">
+        <config>
+          <theme>@style/Theme.FarmacIA</theme>
+        </config>
+      </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_search_medicines.xml">
         <config>
           <theme>@style/Theme.FarmacIA</theme>
         </config>
@@ -41,19 +36,8 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e96236d1-3992-43df-9174-1b042dc615ce" name="Changes" comment="Nuevas funcionalidades relacionadas con el usuario y el pastillero">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/img_1.png" afterDir="false" />
+    <list default="true" id="e96236d1-3992-43df-9174-1b042dc615ce" name="Changes" comment="Boton para retroceder en la activity_pillbox.xml">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/HomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/HomeActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/SearchMedicinesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/SearchMedicinesActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_search_medicines.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_search_medicines.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_medicamento.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_medicamento.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_medicamento_cima.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_medicamento_cima.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -63,7 +47,7 @@
   <component name="ClangdSettings">
     <option name="formatViaClangd" value="false" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=/home/mastre/.android/avd/Medium_Phone_2.avd)]" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="device_and_snapshot_combo_box_target[DeviceId(pluginId=LocalEmulator, isTemplate=false, identifier=path=C:\Users\User\.android\avd\Medium_Phone.avd)]" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -138,22 +122,23 @@
     }
   ]
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Zexing00/FarmacIA.git&quot;,
-    &quot;accountId&quot;: &quot;5874c8ea-bbaf-4c60-af47-4b76fcbae05f&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Zexing00/FarmacIA.git",
+    "accountId": "f4f871b7-efe1-4432-afd4-2b37e392b355"
   },
-  &quot;recentNewPullRequestHead&quot;: {
-    &quot;server&quot;: {
-      &quot;useHttp&quot;: false,
-      &quot;host&quot;: &quot;github.com&quot;,
-      &quot;port&quot;: null,
-      &quot;suffix&quot;: null
+  "recentNewPullRequestHead": {
+    "server": {
+      "useHttp": false,
+      "host": "github.com",
+      "port": null,
+      "suffix": null
     },
-    &quot;owner&quot;: &quot;Zexing00&quot;,
-    &quot;repository&quot;: &quot;FarmacIA&quot;
+    "owner": "Zexing00",
+    "repository": "FarmacIA"
   }
-}</component>
+}]]></component>
+  <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="C:\Users\User\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q40clulazy9h7d\gradle-8.13" javaHome="C:\Program Files\Android\Android Studio\jbr" gradleVersion="8.13" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -173,8 +158,8 @@
     "RunOnceActivity.readMode.enableVisualFormatting": "true",
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
-    "com.google.services.firebase.aqiPopupShown": "true",
-    "git-widget-placeholder": "#11 on FeaturesApp",
+    "git-widget-placeholder": "GoBackButtons",
+    "kotlin-language-version-configured": "true",
     "project.structure.last.edited": "Modules",
     "project.structure.proportion": "0.17",
     "project.structure.side.proportion": "0.2",
@@ -311,31 +296,23 @@
       <option name="project" value="LOCAL" />
       <updated>1765490750183</updated>
     </task>
-    <task id="LOCAL-00007" summary="Features del administrador">
+    <task id="LOCAL-00007" summary="Feature para añadir medicamentos al pastillero">
       <option name="closed" value="true" />
-      <created>1765708286135</created>
+      <created>1765540173928</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1765708286135</updated>
+      <updated>1765540173928</updated>
     </task>
-    <task id="LOCAL-00008" summary="nuevos cambios relacionados con el pastillero">
+    <task id="LOCAL-00008" summary="Boton para retroceder en la activity_pillbox.xml">
       <option name="closed" value="true" />
-      <created>1766404123652</created>
+      <created>1766858034410</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1766404123652</updated>
+      <updated>1766858034410</updated>
     </task>
-    <task id="LOCAL-00009" summary="Nuevas funcionalidades relacionadas con el usuario y el pastillero">
-      <option name="closed" value="true" />
-      <created>1766405132744</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1766405132744</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -354,22 +331,21 @@
     <MESSAGE value="Añadiendo proyecto Android completo" />
     <MESSAGE value="update config properties" />
     <MESSAGE value="primer commit" />
-    <MESSAGE value="Features del administrador" />
-    <MESSAGE value="nuevos cambios relacionados con el pastillero" />
-    <MESSAGE value="Nuevas funcionalidades relacionadas con el usuario y el pastillero" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nuevas funcionalidades relacionadas con el usuario y el pastillero" />
+    <MESSAGE value="Feature para añadir medicamentos al pastillero" />
+    <MESSAGE value="Boton para retroceder en la activity_pillbox.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Boton para retroceder en la activity_pillbox.xml" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">
       <map>
         <entry key="com.example.farmacia">
           <value>
-            <CheckInfo lastCheckTimestamp="1766406962977" />
+            <CheckInfo lastCheckTimestamp="1766855232544" />
           </value>
         </entry>
         <entry key="com.example.farmacia.test">
           <value>
-            <CheckInfo lastCheckTimestamp="1766406962977" />
+            <CheckInfo lastCheckTimestamp="1766855232545" />
           </value>
         </entry>
       </map>

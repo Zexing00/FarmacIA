@@ -5,8 +5,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +31,16 @@ public class PillboxActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pillbox);
+
+
+        // Go back button configuration
+        ImageButton btnPillboxBack = findViewById(R.id.btnPillboxBack);
+        btnPillboxBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish(); // Cierra la actividad actual y vuelve a la anterior
+            }
+        });
 
         rvMedications = findViewById(R.id.rvMedications);
         rvMedications.setLayoutManager(new LinearLayoutManager(this));
