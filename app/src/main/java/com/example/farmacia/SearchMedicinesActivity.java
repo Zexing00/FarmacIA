@@ -32,6 +32,7 @@ public class SearchMedicinesActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private CimaService cimaService;
     private int userId;
+    private ImageButton btnSearchBack;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,7 @@ public class SearchMedicinesActivity extends AppCompatActivity {
         btnSearch = findViewById(R.id.btnSearch);
         rvSearchResults = findViewById(R.id.rvSearchResults);
         progressBar = findViewById(R.id.progressBar);
+        btnSearchBack = findViewById(R.id.btnSearchBack);
 
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
 
@@ -57,6 +59,14 @@ public class SearchMedicinesActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 performSearch();
+            }
+        });
+
+        // Go back button configuration
+        btnSearchBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
         });
 
