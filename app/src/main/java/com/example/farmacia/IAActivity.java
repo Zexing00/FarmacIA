@@ -59,6 +59,15 @@ public class IAActivity extends AppCompatActivity {
 
     private int currentUserId = -1;
 
+    private String incomingMode = null;
+    private String incomingMedName = null;
+    private boolean isResumenMode = false;
+
+    private static final String AVISO_RESUMEN =
+            "⚠️ Aviso: Este resumen es orientativo y puede no ser tan exacto como el prospecto. " +
+                    "Para información fiable consulta el prospecto oficial (CIMA) y, si tienes dudas o síntomas, habla con tu médico o farmacéutico.";
+
+
     private enum UiState { NEED_MED, MENU, WAITING_AI, SATISFACTION }
     private UiState state = UiState.NEED_MED;
 
@@ -95,14 +104,31 @@ public class IAActivity extends AppCompatActivity {
         etInput.setEnabled(false);
 
         currentUserId = getIntent().getIntExtra("USER_ID", -1);
+
+        incomingMode = getIntent().getStringExtra("IA_MODE");
+        incomingMedName = getIntent().getStringExtra("MED_NAME");
+        isResumenMode = "RESUMEN".equals(incomingMode) && incomingMedName != null && !incomingMedName.trim().isEmpty();
+
         pastilleroDAO = new PastilleroDAO(this);
 
         btnPickMed.setEnabled(false);
 
+        if (isResumenMode) {
+            btnPickMed.setVisibility(View.GONE);
+            panelOptions.setVisibility(View.GONE);
+            panelSatisfaction.setVisibility(View.GONE);
+            panelInput.setVisibility(View.GONE);
+
+            addBot("Resumen inteligente");
+            addBot(AVISO_RESUMEN); // <-- AÑADIDO: aviso al principio del resumen (solo una vez)
+            addUser("Hazme un resumen de " + incomingMedName);
+            sendPromptToAI(buildPromptResumen(incomingMedName));
+            return;
+        }
+
         addBot("Hola 👋 Soy tu asistente. Para empezar, selecciona un medicamento del pastillero.");
         addBot("⚠️ Aviso importante: Soy un asistente que te ayuda a entender tu medicación, pero no puedo sustituir a un médico real. " +
                 "Si tienes síntomas, dudas importantes o no te sientes bien, pide ayuda a un profesional sanitario o a alguien de confianza.");
-
 
         loadUserMeds();
 
@@ -130,7 +156,9 @@ public class IAActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        loadUserMeds();
+        if (!isResumenMode) {
+            loadUserMeds();
+        }
     }
 
     private void showNeedMed() {
@@ -260,7 +288,7 @@ public class IAActivity extends AppCompatActivity {
     private void onOptionAlergias() {
         if (!ensureMainMedSelected()) return;
 
-        addUser("Alergias / contraindicaciones");
+        addUser("Alergias / posibles efectos secundarios");
         sendPromptToAI(buildPromptAlergias(selectedMed.getNombre()));
     }
 
@@ -334,11 +362,19 @@ public class IAActivity extends AppCompatActivity {
                 "Usa 4 a 6 viñetas cortas y claras.";
     }
 
+    private String buildPromptResumen(String medName) {
+        return "Eres un médico cercano y amable. Explica de forma sencilla para personas mayores. Responde en español. " +
+                "Explicalo de una manera objetiva como un profesional, sin tecnicismos y sin ser coloquial, como si estuvieras haciendo un resumen neutro.\n" +
+                "No uses asteriscos dobles ** ni negritas y no uses listas ni viñetas.\n\n" +
+                "Medicamento: " + medName + "\n\n" +
+                "Escribe exactamente dos párrafos cortos. En el primero explica para qué sirve y en qué casos se usa normalmente. " +
+                "No des consejos de uso, solamente el resumen del medicamento";
+    }
+
     private void sendPromptToAI(String prompt) {
         int typingIndex = addBot("Escribiendo...");
 
         GeminiService service = GeminiApiClient.getGeminiService();
-
         GeminiRequest request = new GeminiRequest(prompt);
 
         Call<GeminiResponse> call = service.generateContent("gemini-2.5-flash", request);
@@ -358,7 +394,9 @@ public class IAActivity extends AppCompatActivity {
                             adapter.notifyItemChanged(typingIndex);
                             scrollToBottom();
 
-                            rvChat.postDelayed(() -> IAActivity.this.showMenu(), 10000);
+                            if (!isResumenMode) {
+                                rvChat.postDelayed(() -> IAActivity.this.showMenu(), 10000);
+                            }
                             return;
                         }
 
@@ -366,25 +404,33 @@ public class IAActivity extends AppCompatActivity {
                                 "Error: HTTP " + code + (detail.isEmpty() ? "" : "\n" + detail)));
                         adapter.notifyItemChanged(typingIndex);
                         scrollToBottom();
-                        addBot("Vuelve a elegir una opción.");
-                        showMenu();
+
+                        if (!isResumenMode) {
+                            addBot("Vuelve a elegir una opción.");
+                            showMenu();
+                        }
                         return;
                     }
-
 
                     String text = response.body().getFirstTextSafe();
                     if (text == null || text.trim().isEmpty()) {
                         messages.set(typingIndex, new ChatMessage(ChatMessage.SENDER_BOT,
                                 "No he podido obtener una respuesta clara."));
                         adapter.notifyItemChanged(typingIndex);
-                        showMenu();
+
+                        if (!isResumenMode) {
+                            showMenu();
+                        }
                         return;
                     }
 
                     messages.set(typingIndex, new ChatMessage(ChatMessage.SENDER_BOT, text));
                     adapter.notifyItemChanged(typingIndex);
                     scrollToBottom();
-                    showSatisfaction();
+
+                    if (!isResumenMode) {
+                        showSatisfaction();
+                    }
                 });
             }
 
@@ -395,13 +441,14 @@ public class IAActivity extends AppCompatActivity {
                             "Error de conexión. Revisa tu internet o espera un momento."));
                     adapter.notifyItemChanged(typingIndex);
                     scrollToBottom();
-                    showMenu();
+
+                    if (!isResumenMode) {
+                        showMenu();
+                    }
                 });
             }
         });
     }
-
-
 
     @Override
     protected void onDestroy() {

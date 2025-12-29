@@ -70,7 +70,6 @@ public class PillboxActivity extends AppCompatActivity {
             Toast.makeText(this, "No tienes medicamentos en tu pastillero", Toast.LENGTH_SHORT).show();
         }
 
-        // Aquí estaba el error: Ahora pasamos el listener 'new MedicamentoAdapter.OnItemClickListener() {...}'
         MedicamentoAdapter adapter = new MedicamentoAdapter(lista, new MedicamentoAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(Medicamento medicamento) {

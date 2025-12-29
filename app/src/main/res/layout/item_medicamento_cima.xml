@@ -70,6 +70,17 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
+
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnResumenInteligente"
+            android:layout_width="368dp"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/accent_yellow"
+            android:text="Resumen inteligente"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_dark_blue" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

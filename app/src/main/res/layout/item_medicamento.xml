@@ -44,6 +44,18 @@
             style="@style/Widget.MaterialComponents.Button"
             android:visibility="gone"/>
 
+        <Button
+            android:id="@+id/btnResumenInteligente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Resumen inteligente"
+            android:layout_marginTop="12dp"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/primary_blue"
+            style="@style/Widget.MaterialComponents.Button" />
+
+
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.farmacia.IAActivity; // <-- AÑADIDO
 import com.example.farmacia.R;
 import com.example.farmacia.dao.PastilleroDAO;
 import com.example.farmacia.model.cima.CimaMedicamento;
@@ -70,6 +71,16 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
                 Toast.makeText(context, "Ya está en tu pastillero o error", Toast.LENGTH_SHORT).show();
             }
         });
+
+        // --- AÑADIDO: botón Resumen inteligente ---
+        holder.btnResumenInteligente.setOnClickListener(v -> {
+            Intent i = new Intent(v.getContext(), IAActivity.class);
+            i.putExtra("USER_ID", userId);
+            i.putExtra("IA_MODE", "RESUMEN");
+            i.putExtra("MED_NAME", medicamento.getNombre());
+            v.getContext().startActivity(i);
+        });
+        // --- FIN AÑADIDO ---
     }
 
     @Override
@@ -84,6 +95,8 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
         Button btnVerProspecto;
         Button btnAddToPillbox;
 
+        Button btnResumenInteligente; // <-- AÑADIDO
+
         public CimaViewHolder(@NonNull View itemView) {
             super(itemView);
             tvNombre = itemView.findViewById(R.id.tvCimaNombre);
@@ -91,6 +104,8 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
             tvNRegistro = itemView.findViewById(R.id.tvCimaReg);
             btnVerProspecto = itemView.findViewById(R.id.btnCimaProspecto);
             btnAddToPillbox = itemView.findViewById(R.id.btnAddToPillbox);
+
+            btnResumenInteligente = itemView.findViewById(R.id.btnResumenInteligente); // <-- AÑADIDO
         }
     }
 }
