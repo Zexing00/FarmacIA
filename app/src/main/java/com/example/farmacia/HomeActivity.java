@@ -108,6 +108,14 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
+        Button btnIA = findViewById(R.id.btnIA);
+        btnIA.setOnClickListener(v -> {
+            Intent i = new Intent(HomeActivity.this, IAActivity.class);
+            i.putExtra("USER_ID", userId);
+            startActivity(i);
+        });
+
+
         verificarCaducidades();
     }
 
