@@ -36,18 +36,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e96236d1-3992-43df-9174-1b042dc615ce" name="Changes" comment="Boton para retroceder en la activity_pillbox.xml">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/receiver/AlarmReceiver.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/values-night/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/AndroidManifest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/PillboxActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/PillboxActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/SearchMedicinesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/SearchMedicinesActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/UsuarioDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/UsuarioDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/themes.xml" afterDir="false" />
-    </list>
+    <list default="true" id="e96236d1-3992-43df-9174-1b042dc615ce" name="Changes" comment="cifrado de contraseñas" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -324,7 +313,15 @@
       <option name="project" value="LOCAL" />
       <updated>1766858034410</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="cifrado de contraseñas">
+      <option name="closed" value="true" />
+      <created>1767527279357</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1767527279357</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -345,7 +342,8 @@
     <MESSAGE value="primer commit" />
     <MESSAGE value="Feature para añadir medicamentos al pastillero" />
     <MESSAGE value="Boton para retroceder en la activity_pillbox.xml" />
-    <option name="LAST_COMMIT_MESSAGE" value="Boton para retroceder en la activity_pillbox.xml" />
+    <MESSAGE value="cifrado de contraseñas" />
+    <option name="LAST_COMMIT_MESSAGE" value="cifrado de contraseñas" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">
