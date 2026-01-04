@@ -102,7 +102,7 @@ public class SearchMedicinesActivity extends AppCompatActivity {
                         CimaAdapter adapter = new CimaAdapter(SearchMedicinesActivity.this, cimaResponse.getResultados(), userId);
                         rvSearchResults.setAdapter(adapter);
                     } else {
-                        Toast.makeText(SearchMedicinesActivity.this, "No se encontraron resultados", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SearchMedicinesActivity.this, "No hay medicamentos existentes", Toast.LENGTH_SHORT).show();
                     }
                 } else {
                     Toast.makeText(SearchMedicinesActivity.this, "Error en la respuesta del servidor", Toast.LENGTH_SHORT).show();
