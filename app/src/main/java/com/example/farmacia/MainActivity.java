@@ -7,7 +7,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.farmacia.dao.UsuarioDAO;
 import com.example.farmacia.model.Administrador;
@@ -24,7 +28,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Habilitar diseño a pantalla completa
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // Ajustar el padding para que el contenido no quede debajo de las barras del sistema
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
@@ -45,15 +58,11 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     Usuario usuario = usuarioDAO.login(username, password);
                     if (usuario != null) {
-                        String tipo = (usuario instanceof Administrador) ? "Administrador" : "Usuario";
-                        Toast.makeText(MainActivity.this, "Bienvenido " + tipo + ": " + usuario.getNombreUsuario(), Toast.LENGTH_LONG).show();
-                        
-                        // Iniciar HomeActivity
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                         intent.putExtra("USER_NAME", usuario.getNombreUsuario());
                         intent.putExtra("USER_ID", usuario.getId());
                         startActivity(intent);
-                        finish(); // Opcional: Cerrar MainActivity para que al dar atrás no vuelva al login
+                        finish();
                     } else {
                         Toast.makeText(MainActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                     }
@@ -61,20 +70,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnGoToRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        btnGoToRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (usuarioDAO != null) {
-            usuarioDAO.close();
-        }
+        if (usuarioDAO != null) usuarioDAO.close();
     }
 }
