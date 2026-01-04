@@ -7,11 +7,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
-import com.example.farmacia.dao.UserDAO;
-import com.example.farmacia.model.Administrator;
-import com.example.farmacia.model.User;
+import com.example.farmacia.dao.UsuarioDAO;
+import com.example.farmacia.model.Administrador;
+import com.example.farmacia.model.Usuario;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,20 +23,29 @@ public class MainActivity extends AppCompatActivity {
     private EditText etPassword;
     private Button btnLogin;
     private Button btnGoToRegister;
-    private UserDAO userDAO;
+    private UsuarioDAO usuarioDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Habilitar diseño a pantalla completa
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_main);
+
+        // Ajustar el padding para que el contenido no quede debajo de las barras del sistema
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
 
         etUsername = findViewById(R.id.etUsername);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);
         btnGoToRegister = findViewById(R.id.btnGoToRegister);
 
-        userDAO = new UserDAO(this);
-        userDAO.open();
+        usuarioDAO = new UsuarioDAO(this);
+        usuarioDAO.open();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,17 +56,13 @@ public class MainActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    User user = userDAO.login(username, password);
-                    if (user != null) {
-                        String userType = (user instanceof Administrator) ? "Administrador" : "Usuario";
-                        Toast.makeText(MainActivity.this, "Bienvenido " + userType + ": " + user.getUsername(), Toast.LENGTH_LONG).show();
-                        
-                        // Start HomeActivity
+                    Usuario usuario = usuarioDAO.login(username, password);
+                    if (usuario != null) {
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                        intent.putExtra("USER_NAME", user.getUsername());
-                        intent.putExtra("USER_ID", user.getId());
+                        intent.putExtra("USER_NAME", usuario.getNombreUsuario());
+                        intent.putExtra("USER_ID", usuario.getId());
                         startActivity(intent);
-                        finish(); // Optional: Close MainActivity so the back button doesn't return to login
+                        finish();
                     } else {
                         Toast.makeText(MainActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                     }
@@ -61,20 +70,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnGoToRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        btnGoToRegister.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (userDAO != null) {
-            userDAO.close();
-        }
+        if (usuarioDAO != null) usuarioDAO.close();
     }
 }
