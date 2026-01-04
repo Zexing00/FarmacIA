@@ -15,6 +15,11 @@
           <theme>@style/Theme.FarmacIA</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_calendar.xml">
+        <config>
+          <theme>@style/Theme.FarmacIA</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/activity_home.xml">
         <config>
           <theme>@style/Theme.FarmacIA</theme>
@@ -56,38 +61,10 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e96236d1-3992-43df-9174-1b042dc615ce" name="Changes" comment="Toda la implementación de la IA y cambio en interfaz (foto de fondo)">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/adapter/MedicationAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/Administrator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/Medication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/Pillbox.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/cima/CimaDocument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/cima/CimaMedication.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/network/CimaApiService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="e96236d1-3992-43df-9174-1b042dc615ce" name="Changes" comment="Traduccion de todo el codigo a ingles">
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/HomeActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/HomeActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/IAActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/IAActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/MainActivity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/PillboxActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/PillboxActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/RegisterActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/SearchMedicinesActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/SearchMedicinesActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/adapter/CimaAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/adapter/CimaAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/adapter/MedicamentoAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/CuidadorDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/CaregiverDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/PastilleroDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/PillboxDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/UsuarioDAO.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/db/DatabaseHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/db/DatabaseHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/Administrador.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/Medicamento.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/Pastillero.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/Usuario.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/cima/CimaDocumento.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/cima/CimaDocumento.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/cima/CimaMedicamento.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/cima/CimaMedicamento.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/cima/CimaResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/model/cima/CimaResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/network/ApiClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/network/ApiClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/network/CimaService.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/network/CimaService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/UserDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/dao/UserDAO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,22 +157,22 @@
     }
   ]
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/Zexing00/FarmacIA.git",
-    "accountId": "f4f871b7-efe1-4432-afd4-2b37e392b355"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/Zexing00/FarmacIA.git&quot;,
+    &quot;accountId&quot;: &quot;f4f871b7-efe1-4432-afd4-2b37e392b355&quot;
   },
-  "recentNewPullRequestHead": {
-    "server": {
-      "useHttp": false,
-      "host": "github.com",
-      "port": null,
-      "suffix": null
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
     },
-    "owner": "Zexing00",
-    "repository": "FarmacIA"
+    &quot;owner&quot;: &quot;Zexing00&quot;,
+    &quot;repository&quot;: &quot;FarmacIA&quot;
   }
-}]]></component>
+}</component>
   <component name="GradleScriptDefinitionsStorage" workingDir="$PROJECT_DIR$" gradleHome="C:\Users\User\.gradle\wrapper\dists\gradle-8.13-bin\5xuhj0ry160q40clulazy9h7d\gradle-8.13" javaHome="C:\Program Files\Android\Android Studio\jbr" gradleVersion="8.13" />
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -219,7 +196,7 @@
     "cf.first.check.clang-format": "false",
     "cidr.known.project.marker": "true",
     "com.google.services.firebase.aqiPopupShown": "true",
-    "git-widget-placeholder": "Traduccion",
+    "git-widget-placeholder": "#16 on Traduccion",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "project.structure.last.edited": "Modules",

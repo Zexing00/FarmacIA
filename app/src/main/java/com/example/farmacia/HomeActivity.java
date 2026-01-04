@@ -1,14 +1,12 @@
 package com.example.farmacia;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -98,7 +96,6 @@ public class HomeActivity extends AppCompatActivity {
             i.putExtra("USER_ID", userId);
             startActivity(i);
         });
-
 
         checkExpirations();
     }
