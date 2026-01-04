@@ -32,7 +32,10 @@
             android:name=".RegisterActivity"
             android:exported="false" />
         
-        <!-- Añadir IAActivity si existe en tu código -->
+        <activity
+            android:name=".CalendarActivity"
+            android:exported="false" />
+        
         <activity
             android:name=".IAActivity"
             android:exported="false" />

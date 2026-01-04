@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.text.InputType;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.StyleSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -16,7 +15,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 
 import com.example.farmacia.dao.CuidadorDAO;
 import com.example.farmacia.dao.PastilleroDAO;
@@ -35,10 +38,7 @@ import java.util.Locale;
 public class HomeActivity extends AppCompatActivity {
 
     private TextView tvWelcome;
-    private Button btnPillbox;
-    private Button btnMedications;
-    private Button btnShareAccess;
-    private Button btnManagePatients;
+    private Button btnCalendar, btnPillbox, btnMedications, btnShareAccess, btnManagePatients, btnIA;
     
     private String userName;
     private int userId;
@@ -50,15 +50,23 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
+        ViewCompat.setOnApplyWindowInsetsListener(findViewById(android.R.id.content), (v, insets) -> {
+            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
+            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+            return insets;
+        });
+
         tvWelcome = findViewById(R.id.tvWelcome);
+        btnCalendar = findViewById(R.id.btnCalendar);
         btnPillbox = findViewById(R.id.btnPillbox);
         btnMedications = findViewById(R.id.btnMedications);
         btnShareAccess = findViewById(R.id.btnShareAccess);
         btnManagePatients = findViewById(R.id.btnManagePatients);
+        btnIA = findViewById(R.id.btnIA);
 
-        // DAOs initialization
         usuarioDAO = new UsuarioDAO(this);
         usuarioDAO.open();
         cuidadorDAO = new CuidadorDAO(this);
@@ -66,55 +74,39 @@ public class HomeActivity extends AppCompatActivity {
         pastilleroDAO = new PastilleroDAO(this);
         pastilleroDAO.open();
 
-        // Recuperar datos del intent
         Intent intent = getIntent();
         if (intent != null) {
             userName = intent.getStringExtra("USER_NAME");
             userId = intent.getIntExtra("USER_ID", -1);
-            if (userName != null) {
-                tvWelcome.setText("Bienvenido, " + userName);
-            }
+            if (userName != null) tvWelcome.setText("Bienvenido, " + userName);
         }
 
-        btnPillbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, PillboxActivity.class);
-                intent.putExtra("USER_ID", userId);
-                startActivity(intent);
-            }
+        btnCalendar.setOnClickListener(v -> {
+            Intent i = new Intent(HomeActivity.this, CalendarActivity.class);
+            i.putExtra("USER_ID", userId);
+            startActivity(i);
         });
 
-        btnMedications.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, SearchMedicinesActivity.class);
-                intent.putExtra("USER_ID", userId);
-                startActivity(intent);
-            }
+        btnPillbox.setOnClickListener(v -> {
+            Intent i = new Intent(HomeActivity.this, PillboxActivity.class);
+            i.putExtra("USER_ID", userId);
+            startActivity(i);
         });
 
-        btnShareAccess.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mostrarOpcionesAcceso();
-            }
+        btnMedications.setOnClickListener(v -> {
+            Intent i = new Intent(HomeActivity.this, SearchMedicinesActivity.class);
+            i.putExtra("USER_ID", userId);
+            startActivity(i);
         });
 
-        btnManagePatients.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mostrarDialogoSeleccionarPaciente();
-            }
-        });
-
-        Button btnIA = findViewById(R.id.btnIA);
+        btnShareAccess.setOnClickListener(v -> mostrarOpcionesAcceso());
+        btnManagePatients.setOnClickListener(v -> mostrarDialogoSeleccionarPaciente());
+        
         btnIA.setOnClickListener(v -> {
             Intent i = new Intent(HomeActivity.this, IAActivity.class);
             i.putExtra("USER_ID", userId);
             startActivity(i);
         });
-
 
         verificarCaducidades();
     }
@@ -167,31 +159,19 @@ public class HomeActivity extends AppCompatActivity {
     private void mostrarDialogoCompartirAcceso() {
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("Nuevo Cuidador");
-        builder.setMessage("Introduce el nombre de usuario de tu cuidador:");
-
+        builder.setMessage("Introduce el nombre de usuario:");
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
-
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String cuidadorNombre = input.getText().toString().trim();
-                if (!cuidadorNombre.isEmpty()) {
-                    int cuidadorId = usuarioDAO.obtenerIdPorNombre(cuidadorNombre);
-                    
-                    if (cuidadorId == -1) {
-                        Toast.makeText(HomeActivity.this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
-                    } else if (cuidadorId == userId) {
-                        Toast.makeText(HomeActivity.this, "No puedes añadirte a ti mismo", Toast.LENGTH_SHORT).show();
-                    } else {
-                        boolean exito = cuidadorDAO.agregarCuidador(userId, cuidadorId);
-                        if (exito) {
-                            Toast.makeText(HomeActivity.this, "Permiso concedido a " + cuidadorNombre, Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(HomeActivity.this, "Este usuario ya tiene permiso", Toast.LENGTH_SHORT).show();
-                        }
-                    }
+        builder.setPositiveButton("Aceptar", (dialog, which) -> {
+            String nombre = input.getText().toString().trim();
+            if (!nombre.isEmpty()) {
+                int cId = usuarioDAO.obtenerIdPorNombre(nombre);
+                if (cId == -1) Toast.makeText(this, "Usuario no encontrado", Toast.LENGTH_SHORT).show();
+                else if (cId == userId) Toast.makeText(this, "No puedes añadirte a ti mismo", Toast.LENGTH_SHORT).show();
+                else {
+                    if (cuidadorDAO.agregarCuidador(userId, cId)) Toast.makeText(this, "Permiso concedido", Toast.LENGTH_SHORT).show();
+                    else Toast.makeText(this, "Ya tiene permiso", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -202,45 +182,34 @@ public class HomeActivity extends AppCompatActivity {
     private void mostrarDialogoQuitarAcceso() {
         List<Usuario> cuidadores = cuidadorDAO.obtenerCuidadoresPorPaciente(userId);
         if (cuidadores.isEmpty()) {
-            Toast.makeText(this, "No tienes cuidadores asignados", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No tienes cuidadores", Toast.LENGTH_SHORT).show();
             return;
         }
-
         String[] nombres = new String[cuidadores.size()];
         for (int i = 0; i < cuidadores.size(); i++) nombres[i] = cuidadores.get(i).getNombreUsuario();
-
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Quitar acceso")
                 .setItems(nombres, (dialog, which) -> {
-                    Usuario c = cuidadores.get(which);
-                    cuidadorDAO.eliminarCuidador(userId, c.getId());
-                    Toast.makeText(this, "Acceso revocado a " + c.getNombreUsuario(), Toast.LENGTH_SHORT).show();
+                    cuidadorDAO.eliminarCuidador(userId, cuidadores.get(which).getId());
+                    Toast.makeText(this, "Acceso revocado", Toast.LENGTH_SHORT).show();
                 }).show();
     }
 
     private void mostrarDialogoSeleccionarPaciente() {
         final List<Usuario> pacientes = cuidadorDAO.obtenerPacientesAsignados(userId);
         if (pacientes.isEmpty()) {
-            Toast.makeText(this, "No tienes pacientes asignados", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No tienes pacientes", Toast.LENGTH_SHORT).show();
             return;
         }
-
         MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(this);
         builder.setTitle("Seleccionar Paciente");
-
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.select_dialog_item);
         for (Usuario p : pacientes) adapter.add(p.getNombreUsuario());
-
-        builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Usuario pacienteSeleccionado = pacientes.get(which);
-                
-                Intent intent = new Intent(HomeActivity.this, PillboxActivity.class);
-                intent.putExtra("USER_ID", pacienteSeleccionado.getId());
-                intent.putExtra("ES_CUIDADOR", true);
-                startActivity(intent);
-            }
+        builder.setAdapter(adapter, (dialog, which) -> {
+            Intent i = new Intent(HomeActivity.this, PillboxActivity.class);
+            i.putExtra("USER_ID", pacientes.get(which).getId());
+            i.putExtra("ES_CUIDADOR", true);
+            startActivity(i);
         });
         builder.show();
     }

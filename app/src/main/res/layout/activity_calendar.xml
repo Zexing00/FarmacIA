@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/app_background"
+    tools:context=".CalendarActivity">
+
+    <ImageButton
+        android:id="@+id/btnCalendarBack"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_menu_revert"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/primary_blue" />
+
+    <TextView
+        android:id="@+id/tvCalendarTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Mi Agenda Semanal"
+        android:textColor="@color/primary_dark_blue"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/btnCalendarBack"
+        app:layout_constraintStart_toEndOf="@+id/btnCalendarBack"
+        app:layout_constraintTop_toTopOf="@+id/btnCalendarBack" />
+
+    <!-- Selector de días de la semana -->
+    <LinearLayout
+        android:id="@+id/layoutDays"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:weightSum="7"
+        app:layout_constraintTop_toBottomOf="@+id/btnCalendarBack">
+
+        <Button android:id="@+id/btnLu" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="L" android:padding="0dp" />
+        <Button android:id="@+id/btnMa" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="M" android:padding="0dp" />
+        <Button android:id="@+id/btnMi" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="X" android:padding="0dp" />
+        <Button android:id="@+id/btnJu" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="J" android:padding="0dp" />
+        <Button android:id="@+id/btnVi" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="V" android:padding="0dp" />
+        <Button android:id="@+id/btnSa" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="S" android:padding="0dp" />
+        <Button android:id="@+id/btnDo" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="D" android:padding="0dp" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tvSelectedDay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tomas para hoy"
+        android:textColor="@color/text_secondary"
+        android:textSize="18sp"
+        android:textStyle="italic"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layoutDays" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDaySchedule"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvSelectedDay" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
