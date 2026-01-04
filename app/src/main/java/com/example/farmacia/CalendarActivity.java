@@ -15,8 +15,8 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.farmacia.dao.PastilleroDAO;
-import com.example.farmacia.model.Medicamento;
+import com.example.farmacia.dao.PillboxDAO;
+import com.example.farmacia.model.Medication;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,11 +26,11 @@ import java.util.List;
 public class CalendarActivity extends AppCompatActivity {
 
     private RecyclerView rvDaySchedule;
-    private PastilleroDAO pastilleroDAO;
+    private PillboxDAO pillboxDAO;
     private int userId;
     private TextView tvSelectedDay;
-    private final String[] diasSemanaLong = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
-    private final String[] diasAbrev = {"Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"};
+    private final String[] longWeekDays = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+    private final String[] shortWeekDays = {"Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"};
     private Button[] dayButtons;
 
     @Override
@@ -39,8 +39,8 @@ public class CalendarActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendar);
 
         userId = getIntent().getIntExtra("USER_ID", -1);
-        pastilleroDAO = new PastilleroDAO(this);
-        pastilleroDAO.open();
+        pillboxDAO = new PillboxDAO(this);
+        pillboxDAO.open();
 
         findViewById(R.id.btnCalendarBack).setOnClickListener(v -> finish());
         tvSelectedDay = findViewById(R.id.tvSelectedDay);
@@ -49,10 +49,10 @@ public class CalendarActivity extends AppCompatActivity {
 
         setupDayButtons();
 
-        // Seleccionar día actual
+        // Select current day
         int dayOfWeek = Calendar.getInstance().get(Calendar.DAY_OF_WEEK);
         int index = (dayOfWeek == Calendar.SUNDAY) ? 6 : dayOfWeek - 2;
-        seleccionarDia(index);
+        selectDay(index);
     }
 
     private void setupDayButtons() {
@@ -61,53 +61,53 @@ public class CalendarActivity extends AppCompatActivity {
         for (int i = 0; i < ids.length; i++) {
             dayButtons[i] = findViewById(ids[i]);
             final int index = i;
-            dayButtons[i].setOnClickListener(v -> seleccionarDia(index));
+            dayButtons[i].setOnClickListener(v -> selectDay(index));
         }
     }
 
-    private void seleccionarDia(int index) {
-        // Resetear estilos de botones
+    private void selectDay(int index) {
+        // Reset button styles
         for (Button btn : dayButtons) {
             btn.setBackgroundTintList(ColorStateList.valueOf(Color.TRANSPARENT));
             btn.setTextColor(ContextCompat.getColor(this, R.color.primary_blue));
         }
-        // Resaltar seleccionado
+        // Highlight selected
         dayButtons[index].setBackgroundTintList(ColorStateList.valueOf(ContextCompat.getColor(this, R.color.primary_blue)));
         dayButtons[index].setTextColor(Color.WHITE);
 
-        tvSelectedDay.setText("Tomas para el " + diasSemanaLong[index]);
-        cargarTomasDia(diasAbrev[index]);
+        tvSelectedDay.setText("Tomas para el " + longWeekDays[index]);
+        loadDosesForDay(shortWeekDays[index]);
     }
 
-    private void cargarTomasDia(String diaAbrev) {
-        List<Medicamento> todos = pastilleroDAO.obtenerMedicamentosPorUsuario(userId);
-        List<Toma> tomasHoy = new ArrayList<>();
+    private void loadDosesForDay(String dayAbbrev) {
+        List<Medication> allMedications = pillboxDAO.getMedicationsByUserId(userId);
+        List<Dose> dosesForToday = new ArrayList<>();
 
-        for (Medicamento m : todos) {
-            String dosis = m.getDosisSemanal();
-            if (dosis == null || !dosis.contains("a las ")) continue;
+        for (Medication m : allMedications) {
+            String doseInfo = m.getWeeklyDose();
+            if (doseInfo == null || !doseInfo.contains("a las ")) continue;
 
-            if (dosis.contains("Todos los días") || dosis.contains(diaAbrev)) {
-                String horasStr = dosis.split("a las ")[1];
-                String[] horasArr = horasStr.split(", ");
-                for (String h : horasArr) {
-                    tomasHoy.add(new Toma(h.trim(), m.getNombre()));
+            if (doseInfo.contains("Todos los días") || doseInfo.contains(dayAbbrev)) {
+                String hoursStr = doseInfo.split("a las ")[1];
+                String[] hoursArr = hoursStr.split(", ");
+                for (String h : hoursArr) {
+                    dosesForToday.add(new Dose(h.trim(), m.getName()));
                 }
             }
         }
 
-        Collections.sort(tomasHoy, (t1, t2) -> t1.hora.compareTo(t2.hora));
-        rvDaySchedule.setAdapter(new TomaAdapter(tomasHoy));
+        Collections.sort(dosesForToday, (d1, d2) -> d1.time.compareTo(d2.time));
+        rvDaySchedule.setAdapter(new DoseAdapter(dosesForToday));
     }
 
-    private static class Toma {
-        String hora, nombre;
-        Toma(String h, String n) { this.hora = h; this.nombre = n; }
+    private static class Dose {
+        String time, name;
+        Dose(String t, String n) { this.time = t; this.name = n; }
     }
 
-    private static class TomaAdapter extends RecyclerView.Adapter<TomaAdapter.ViewHolder> {
-        private final List<Toma> tomas;
-        TomaAdapter(List<Toma> tomas) { this.tomas = tomas; }
+    private static class DoseAdapter extends RecyclerView.Adapter<DoseAdapter.ViewHolder> {
+        private final List<Dose> doses;
+        DoseAdapter(List<Dose> doses) { this.doses = doses; }
 
         @NonNull
         @Override
@@ -118,20 +118,20 @@ public class CalendarActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-            Toma t = tomas.get(position);
-            holder.tvHora.setText(t.hora);
-            holder.tvNombre.setText(t.nombre);
+            Dose d = doses.get(position);
+            holder.tvTime.setText(d.time);
+            holder.tvName.setText(d.name);
         }
 
         @Override
-        public int getItemCount() { return tomas.size(); }
+        public int getItemCount() { return doses.size(); }
 
         static class ViewHolder extends RecyclerView.ViewHolder {
-            TextView tvHora, tvNombre;
+            TextView tvTime, tvName;
             ViewHolder(View v) {
                 super(v);
-                tvHora = v.findViewById(R.id.tvTomaHora);
-                tvNombre = v.findViewById(R.id.tvTomaNombre);
+                tvTime = v.findViewById(R.id.tvTomaHora);
+                tvName = v.findViewById(R.id.tvTomaNombre);
             }
         }
     }
