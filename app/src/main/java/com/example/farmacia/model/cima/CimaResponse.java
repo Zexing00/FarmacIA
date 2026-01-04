@@ -1,42 +1,51 @@
 package com.example.farmacia.model.cima;
 
+import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class CimaResponse {
-    private int totalFilas;
-    private int pagina;
-    private int tamanoPagina;
-    private List<CimaMedicamento> resultados;
 
-    public int getTotalFilas() {
-        return totalFilas;
+    @SerializedName("totalFilas")
+    private int totalRows;
+
+    @SerializedName("pagina")
+    private int page;
+
+    @SerializedName("tamanoPagina")
+    private int pageSize;
+
+    @SerializedName("resultados")
+    private List<CimaMedication> results;
+
+    public int getTotalRows() {
+        return totalRows;
     }
 
-    public void setTotalFilas(int totalFilas) {
-        this.totalFilas = totalFilas;
+    public void setTotalRows(int totalRows) {
+        this.totalRows = totalRows;
     }
 
-    public int getPagina() {
-        return pagina;
+    public int getPage() {
+        return page;
     }
 
-    public void setPagina(int pagina) {
-        this.pagina = pagina;
+    public void setPage(int page) {
+        this.page = page;
     }
 
-    public int getTamanoPagina() {
-        return tamanoPagina;
+    public int getPageSize() {
+        return pageSize;
     }
 
-    public void setTamanoPagina(int tamanoPagina) {
-        this.tamanoPagina = tamanoPagina;
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
 
-    public List<CimaMedicamento> getResultados() {
-        return resultados;
+    public List<CimaMedication> getResults() {
+        return results;
     }
 
-    public void setResultados(List<CimaMedicamento> resultados) {
-        this.resultados = resultados;
+    public void setResults(List<CimaMedication> results) {
+        this.results = results;
     }
 }

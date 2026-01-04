@@ -9,9 +9,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.farmacia.dao.UsuarioDAO;
-import com.example.farmacia.model.Administrador;
-import com.example.farmacia.model.Usuario;
+import com.example.farmacia.dao.UserDAO;
+import com.example.farmacia.model.Administrator;
+import com.example.farmacia.model.User;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText etPassword;
     private Button btnLogin;
     private Button btnGoToRegister;
-    private UsuarioDAO usuarioDAO;
+    private UserDAO userDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,8 +31,8 @@ public class MainActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         btnGoToRegister = findViewById(R.id.btnGoToRegister);
 
-        usuarioDAO = new UsuarioDAO(this);
-        usuarioDAO.open();
+        userDAO = new UserDAO(this);
+        userDAO.open();
 
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,17 +43,17 @@ public class MainActivity extends AppCompatActivity {
                 if (username.isEmpty() || password.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
                 } else {
-                    Usuario usuario = usuarioDAO.login(username, password);
-                    if (usuario != null) {
-                        String tipo = (usuario instanceof Administrador) ? "Administrador" : "Usuario";
-                        Toast.makeText(MainActivity.this, "Bienvenido " + tipo + ": " + usuario.getNombreUsuario(), Toast.LENGTH_LONG).show();
+                    User user = userDAO.login(username, password);
+                    if (user != null) {
+                        String userType = (user instanceof Administrator) ? "Administrador" : "Usuario";
+                        Toast.makeText(MainActivity.this, "Bienvenido " + userType + ": " + user.getUsername(), Toast.LENGTH_LONG).show();
                         
-                        // Iniciar HomeActivity
+                        // Start HomeActivity
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                        intent.putExtra("USER_NAME", usuario.getNombreUsuario());
-                        intent.putExtra("USER_ID", usuario.getId());
+                        intent.putExtra("USER_NAME", user.getUsername());
+                        intent.putExtra("USER_ID", user.getId());
                         startActivity(intent);
-                        finish(); // Opcional: Cerrar MainActivity para que al dar atrás no vuelva al login
+                        finish(); // Optional: Close MainActivity so the back button doesn't return to login
                     } else {
                         Toast.makeText(MainActivity.this, "Credenciales incorrectas", Toast.LENGTH_SHORT).show();
                     }
@@ -73,8 +73,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (usuarioDAO != null) {
-            usuarioDAO.close();
+        if (userDAO != null) {
+            userDAO.close();
         }
     }
 }

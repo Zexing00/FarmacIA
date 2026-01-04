@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface CimaService {
+public interface CimaApiService {
     @GET("medicamentos")
-    Call<CimaResponse> buscarMedicamentos(@Query("nombre") String nombre);
+    Call<CimaResponse> searchMedicationsByName(@Query("nombre") String name);
 }

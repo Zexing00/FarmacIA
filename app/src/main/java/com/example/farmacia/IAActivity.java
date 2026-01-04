@@ -12,9 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.farmacia.adapter.ChatAdapter;
-import com.example.farmacia.dao.PastilleroDAO;
+import com.example.farmacia.dao.PillboxDAO;
 import com.example.farmacia.model.ChatMessage;
-import com.example.farmacia.model.Medicamento;
+import com.example.farmacia.model.Medication;
 import com.example.farmacia.network.GeminiApiClient;
 import com.example.farmacia.network.GeminiRequest;
 import com.example.farmacia.network.GeminiResponse;
@@ -40,9 +40,9 @@ public class IAActivity extends AppCompatActivity {
     private Button btnPickMed;
 
     private View panelOptions;
-    private Button btnOptAlergias;
-    private Button btnOptAlimentosAlcohol;
-    private Button btnOptInteracciones;
+    private Button btnOptAllergies;
+    private Button btnOptFoodAlcohol;
+    private Button btnOptInteractions;
 
     private View panelSatisfaction;
     private Button btnYes;
@@ -52,18 +52,18 @@ public class IAActivity extends AppCompatActivity {
     private ChatAdapter adapter;
 
     private final ExecutorService dbExecutor = Executors.newSingleThreadExecutor();
-    private PastilleroDAO pastilleroDAO;
+    private PillboxDAO pillboxDAO;
 
-    private final List<Medicamento> meds = new ArrayList<>();
-    private Medicamento selectedMed = null;
+    private final List<Medication> meds = new ArrayList<>();
+    private Medication selectedMed = null;
 
     private int currentUserId = -1;
 
     private String incomingMode = null;
     private String incomingMedName = null;
-    private boolean isResumenMode = false;
+    private boolean isSummaryMode = false;
 
-    private static final String AVISO_RESUMEN =
+    private static final String SUMMARY_NOTICE =
             "⚠️ Aviso: Este resumen es orientativo y puede no ser tan exacto como el prospecto. " +
                     "Para información fiable consulta el prospecto oficial (CIMA) y, si tienes dudas o síntomas, habla con tu médico o farmacéutico.";
 
@@ -85,9 +85,9 @@ public class IAActivity extends AppCompatActivity {
         btnPickMed = findViewById(R.id.btnPickMed);
 
         panelOptions = findViewById(R.id.panelOptions);
-        btnOptAlergias = findViewById(R.id.btnOptAlergias);
-        btnOptAlimentosAlcohol = findViewById(R.id.btnOptAlimentosAlcohol);
-        btnOptInteracciones = findViewById(R.id.btnOptInteracciones);
+        btnOptAllergies = findViewById(R.id.btnOptAlergias);
+        btnOptFoodAlcohol = findViewById(R.id.btnOptAlimentosAlcohol);
+        btnOptInteractions = findViewById(R.id.btnOptInteracciones);
 
         panelSatisfaction = findViewById(R.id.panelSatisfaction);
         btnYes = findViewById(R.id.btnYes);
@@ -107,22 +107,22 @@ public class IAActivity extends AppCompatActivity {
 
         incomingMode = getIntent().getStringExtra("IA_MODE");
         incomingMedName = getIntent().getStringExtra("MED_NAME");
-        isResumenMode = "RESUMEN".equals(incomingMode) && incomingMedName != null && !incomingMedName.trim().isEmpty();
+        isSummaryMode = "RESUMEN".equals(incomingMode) && incomingMedName != null && !incomingMedName.trim().isEmpty();
 
-        pastilleroDAO = new PastilleroDAO(this);
+        pillboxDAO = new PillboxDAO(this);
 
         btnPickMed.setEnabled(false);
 
-        if (isResumenMode) {
+        if (isSummaryMode) {
             btnPickMed.setVisibility(View.GONE);
             panelOptions.setVisibility(View.GONE);
             panelSatisfaction.setVisibility(View.GONE);
             panelInput.setVisibility(View.GONE);
 
             addBot("Resumen inteligente");
-            addBot(AVISO_RESUMEN); // <-- AÑADIDO: aviso al principio del resumen (solo una vez)
+            addBot(SUMMARY_NOTICE);
             addUser("Hazme un resumen de " + incomingMedName);
-            sendPromptToAI(buildPromptResumen(incomingMedName));
+            sendPromptToAI(buildSummaryPrompt(incomingMedName));
             return;
         }
 
@@ -134,9 +134,9 @@ public class IAActivity extends AppCompatActivity {
 
         btnPickMed.setOnClickListener(v -> openPickMedicationDialog());
 
-        btnOptAlergias.setOnClickListener(v -> onOptionAlergias());
-        btnOptAlimentosAlcohol.setOnClickListener(v -> onOptionAlimentosAlcohol());
-        btnOptInteracciones.setOnClickListener(v -> onOptionInteracciones());
+        btnOptAllergies.setOnClickListener(v -> onAllergiesOption());
+        btnOptFoodAlcohol.setOnClickListener(v -> onFoodAlcoholOption());
+        btnOptInteractions.setOnClickListener(v -> onInteractionsOption());
 
         btnYes.setOnClickListener(v -> {
             addUser("Sí");
@@ -156,7 +156,7 @@ public class IAActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (!isResumenMode) {
+        if (!isSummaryMode) {
             loadUserMeds();
         }
     }
@@ -165,9 +165,9 @@ public class IAActivity extends AppCompatActivity {
         state = UiState.NEED_MED;
         panelOptions.setVisibility(View.VISIBLE);
         panelSatisfaction.setVisibility(View.GONE);
-        btnOptAlergias.setEnabled(false);
-        btnOptAlimentosAlcohol.setEnabled(false);
-        btnOptInteracciones.setEnabled(false);
+        btnOptAllergies.setEnabled(false);
+        btnOptFoodAlcohol.setEnabled(false);
+        btnOptInteractions.setEnabled(false);
     }
 
     private void showMenu() {
@@ -178,9 +178,9 @@ public class IAActivity extends AppCompatActivity {
         state = UiState.MENU;
         panelOptions.setVisibility(View.VISIBLE);
         panelSatisfaction.setVisibility(View.GONE);
-        btnOptAlergias.setEnabled(true);
-        btnOptAlimentosAlcohol.setEnabled(true);
-        btnOptInteracciones.setEnabled(true);
+        btnOptAllergies.setEnabled(true);
+        btnOptFoodAlcohol.setEnabled(true);
+        btnOptInteractions.setEnabled(true);
         btnPickMed.setEnabled(true);
     }
 
@@ -226,9 +226,9 @@ public class IAActivity extends AppCompatActivity {
 
         dbExecutor.execute(() -> {
             try {
-                pastilleroDAO.open();
-                List<Medicamento> list = pastilleroDAO.obtenerMedicamentosPorUsuario(currentUserId);
-                pastilleroDAO.close();
+                pillboxDAO.open();
+                List<Medication> list = pillboxDAO.getMedicationsByUserId(currentUserId);
+                pillboxDAO.close();
 
                 runOnUiThread(() -> {
                     meds.clear();
@@ -244,7 +244,7 @@ public class IAActivity extends AppCompatActivity {
                     }
                 });
             } catch (Exception e) {
-                try { pastilleroDAO.close(); } catch (Exception ignored) {}
+                try { pillboxDAO.close(); } catch (Exception ignored) {}
                 runOnUiThread(() -> {
                     addBot("Error cargando pastillero: " + e.getMessage());
                     btnPickMed.setEnabled(true);
@@ -263,13 +263,13 @@ public class IAActivity extends AppCompatActivity {
         }
 
         String[] names = new String[meds.size()];
-        for (int i = 0; i < meds.size(); i++) names[i] = meds.get(i).getNombre();
+        for (int i = 0; i < meds.size(); i++) names[i] = meds.get(i).getName();
 
         new AlertDialog.Builder(this)
                 .setTitle("Selecciona un medicamento")
                 .setItems(names, (dialog, which) -> {
                     selectedMed = meds.get(which);
-                    addBot("✅ Medicamento seleccionado: " + selectedMed.getNombre());
+                    addBot("✅ Medicamento seleccionado: " + selectedMed.getName());
                     showMenu();
                 })
                 .setNegativeButton("Cancelar", null)
@@ -285,21 +285,21 @@ public class IAActivity extends AppCompatActivity {
         return true;
     }
 
-    private void onOptionAlergias() {
+    private void onAllergiesOption() {
         if (!ensureMainMedSelected()) return;
 
         addUser("Alergias / posibles efectos secundarios");
-        sendPromptToAI(buildPromptAlergias(selectedMed.getNombre()));
+        sendPromptToAI(buildAllergiesPrompt(selectedMed.getName()));
     }
 
-    private void onOptionAlimentosAlcohol() {
+    private void onFoodAlcoholOption() {
         if (!ensureMainMedSelected()) return;
 
         addUser("Compatibilidad con alimentos o alcohol");
-        sendPromptToAI(buildPromptAlimentosAlcohol(selectedMed.getNombre()));
+        sendPromptToAI(buildFoodAlcoholPrompt(selectedMed.getName()));
     }
 
-    private void onOptionInteracciones() {
+    private void onInteractionsOption() {
         if (!ensureMainMedSelected()) return;
 
         if (meds.size() < 2) {
@@ -307,8 +307,8 @@ public class IAActivity extends AppCompatActivity {
             return;
         }
 
-        List<Medicamento> candidates = new ArrayList<>();
-        for (Medicamento m : meds) {
+        List<Medication> candidates = new ArrayList<>();
+        for (Medication m : meds) {
             if (m.getId() != selectedMed.getId()) candidates.add(m);
         }
 
@@ -318,21 +318,21 @@ public class IAActivity extends AppCompatActivity {
         }
 
         String[] names = new String[candidates.size()];
-        for (int i = 0; i < candidates.size(); i++) names[i] = candidates.get(i).getNombre();
+        for (int i = 0; i < candidates.size(); i++) names[i] = candidates.get(i).getName();
 
         new AlertDialog.Builder(this)
                 .setTitle("Selecciona el otro medicamento")
                 .setItems(names, (dialog, which) -> {
-                    Medicamento other = candidates.get(which);
+                    Medication other = candidates.get(which);
                     addUser("Compatibilidad con otro medicamento");
-                    addBot("Comparando: " + selectedMed.getNombre() + " + " + other.getNombre());
-                    sendPromptToAI(buildPromptInteracciones(selectedMed.getNombre(), other.getNombre()));
+                    addBot("Comparando: " + selectedMed.getName() + " + " + other.getName());
+                    sendPromptToAI(buildInteractionsPrompt(selectedMed.getName(), other.getName()));
                 })
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
 
-    private String buildPromptAlergias(String medName) {
+    private String buildAllergiesPrompt(String medName) {
         return "Eres un médico cercano y amable. Responde en español.\n\n" +
                 "Medicamento: " + medName + "\n\n" +
                 "Da la respuesta directa, sencilla, sin tecnicismos.\n" +
@@ -341,7 +341,7 @@ public class IAActivity extends AppCompatActivity {
                 "Usa 4 a 6 viñetas cortas y claras.";
     }
 
-    private String buildPromptAlimentosAlcohol(String medName) {
+    private String buildFoodAlcoholPrompt(String medName) {
         return "Eres un médico cercano y amable. Responde en español.\n\n" +
                 "Medicamento: " + medName + "\n\n" +
                 "Da la respuesta directa, sencilla, sin tecnicismos.\n" +
@@ -351,7 +351,7 @@ public class IAActivity extends AppCompatActivity {
                 "Usa 4 a 6 viñetas cortas y claras.";
     }
 
-    private String buildPromptInteracciones(String med1, String med2) {
+    private String buildInteractionsPrompt(String med1, String med2) {
         return "Eres un médico cercano y amable. Responde en español.\n\n" +
                 "Medicamento 1: " + med1 + "\n" +
                 "Medicamento 2: " + med2 + "\n\n" +
@@ -362,7 +362,7 @@ public class IAActivity extends AppCompatActivity {
                 "Usa 4 a 6 viñetas cortas y claras.";
     }
 
-    private String buildPromptResumen(String medName) {
+    private String buildSummaryPrompt(String medName) {
         return "Eres un médico cercano y amable. Explica de forma sencilla para personas mayores. Responde en español. " +
                 "Explicalo de una manera objetiva como un profesional, sin tecnicismos y sin ser coloquial, como si estuvieras haciendo un resumen neutro.\n" +
                 "No uses asteriscos dobles ** ni negritas y no uses listas ni viñetas.\n\n" +
@@ -394,7 +394,7 @@ public class IAActivity extends AppCompatActivity {
                             adapter.notifyItemChanged(typingIndex);
                             scrollToBottom();
 
-                            if (!isResumenMode) {
+                            if (!isSummaryMode) {
                                 rvChat.postDelayed(() -> IAActivity.this.showMenu(), 10000);
                             }
                             return;
@@ -405,7 +405,7 @@ public class IAActivity extends AppCompatActivity {
                         adapter.notifyItemChanged(typingIndex);
                         scrollToBottom();
 
-                        if (!isResumenMode) {
+                        if (!isSummaryMode) {
                             addBot("Vuelve a elegir una opción.");
                             showMenu();
                         }
@@ -418,7 +418,7 @@ public class IAActivity extends AppCompatActivity {
                                 "No he podido obtener una respuesta clara."));
                         adapter.notifyItemChanged(typingIndex);
 
-                        if (!isResumenMode) {
+                        if (!isSummaryMode) {
                             showMenu();
                         }
                         return;
@@ -428,7 +428,7 @@ public class IAActivity extends AppCompatActivity {
                     adapter.notifyItemChanged(typingIndex);
                     scrollToBottom();
 
-                    if (!isResumenMode) {
+                    if (!isSummaryMode) {
                         showSatisfaction();
                     }
                 });
@@ -442,7 +442,7 @@ public class IAActivity extends AppCompatActivity {
                     adapter.notifyItemChanged(typingIndex);
                     scrollToBottom();
 
-                    if (!isResumenMode) {
+                    if (!isSummaryMode) {
                         showMenu();
                     }
                 });
@@ -454,6 +454,6 @@ public class IAActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         dbExecutor.shutdown();
-        try { pastilleroDAO.close(); } catch (Exception ignored) {}
+        try { pillboxDAO.close(); } catch (Exception ignored) {}
     }
 }
