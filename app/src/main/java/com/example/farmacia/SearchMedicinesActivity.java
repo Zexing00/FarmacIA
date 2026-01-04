@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.farmacia.adapter.CimaAdapter;
 import com.example.farmacia.model.cima.CimaResponse;
 import com.example.farmacia.network.ApiClient;
-import com.example.farmacia.network.CimaService;
+import com.example.farmacia.network.CimaApiService;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -27,10 +27,10 @@ import retrofit2.Response;
 public class SearchMedicinesActivity extends AppCompatActivity {
 
     private EditText etSearchQuery;
-    private ImageButton btnSearch; // Cambiado de Button a ImageButton
+    private ImageButton btnSearch;
     private RecyclerView rvSearchResults;
     private ProgressBar progressBar;
-    private CimaService cimaService;
+    private CimaApiService cimaApiService;
     private int userId;
     private ImageButton btnSearchBack;
 
@@ -47,13 +47,13 @@ public class SearchMedicinesActivity extends AppCompatActivity {
 
         rvSearchResults.setLayoutManager(new LinearLayoutManager(this));
 
-        // Recuperar ID de usuario
+        // Retrieve user ID
         Intent intent = getIntent();
         if (intent != null) {
             userId = intent.getIntExtra("USER_ID", -1);
         }
 
-        cimaService = ApiClient.getCimaService();
+        cimaApiService = ApiClient.getCimaApiService();
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,14 +92,14 @@ public class SearchMedicinesActivity extends AppCompatActivity {
         progressBar.setVisibility(View.VISIBLE);
         rvSearchResults.setAdapter(null);
 
-        cimaService.buscarMedicamentos(query).enqueue(new Callback<CimaResponse>() {
+        cimaApiService.searchMedicationsByName(query).enqueue(new Callback<CimaResponse>() {
             @Override
             public void onResponse(Call<CimaResponse> call, Response<CimaResponse> response) {
                 progressBar.setVisibility(View.GONE);
                 if (response.isSuccessful() && response.body() != null) {
                     CimaResponse cimaResponse = response.body();
-                    if (cimaResponse.getResultados() != null && !cimaResponse.getResultados().isEmpty()) {
-                        CimaAdapter adapter = new CimaAdapter(SearchMedicinesActivity.this, cimaResponse.getResultados(), userId);
+                    if (cimaResponse.getResults() != null && !cimaResponse.getResults().isEmpty()) {
+                        CimaAdapter adapter = new CimaAdapter(SearchMedicinesActivity.this, cimaResponse.getResults(), userId);
                         rvSearchResults.setAdapter(adapter);
                     } else {
                         Toast.makeText(SearchMedicinesActivity.this, "No hay medicamentos existentes", Toast.LENGTH_SHORT).show();
