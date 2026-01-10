@@ -9,12 +9,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.farmacia.dao.UserDAO;
+import com.google.android.material.button.MaterialButton;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etUsername;
     private EditText etPassword;
-    private Button btnRegister;
+    private MaterialButton btnRegisterUser;
+    private MaterialButton btnGoToLogin;
     private UserDAO userDAO;
 
     @Override
@@ -24,12 +26,13 @@ public class RegisterActivity extends AppCompatActivity {
 
         etUsername = findViewById(R.id.etNewUsername);
         etPassword = findViewById(R.id.etNewPassword);
-        btnRegister = findViewById(R.id.btnRegisterUser);
+        btnRegisterUser = findViewById(R.id.btnRegisterUser);
+        btnGoToLogin = findViewById(R.id.btnGoToLogin);
 
         userDAO = new UserDAO(this);
         userDAO.open();
 
-        btnRegister.setOnClickListener(new View.OnClickListener() {
+        btnRegisterUser.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String username = etUsername.getText().toString().trim();
@@ -53,6 +56,11 @@ public class RegisterActivity extends AppCompatActivity {
                     Toast.makeText(RegisterActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
                 }
             }
+        });
+
+        // Listener for the new button to go back to login
+        btnGoToLogin.setOnClickListener(v -> {
+            finish(); // Simply close this activity to go back
         });
     }
 

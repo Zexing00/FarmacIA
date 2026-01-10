@@ -4,57 +4,112 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
+    android:background="@drawable/gradient_background"
     tools:context=".RegisterActivity">
+
+    <ImageView
+        android:id="@+id/ivRegisterLogo"
+        android:layout_width="254dp"
+        android:layout_height="217dp"
+        android:layout_marginTop="76dp"
+        android:src="@drawable/registro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvRegisterTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registro de Nuevo Usuario"
-        android:textSize="24sp"
+        android:layout_marginTop="16dp"
+        android:text="Crear Cuenta en FarmacIA"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
         android:textStyle="bold"
-        android:layout_marginBottom="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/etNewUsername"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@+id/ivRegisterLogo" />
 
-    <EditText
-        android:id="@+id/etNewUsername"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNewUsername"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
         android:hint="Nombre de usuario"
-        android:inputType="textPersonName"
-        android:minHeight="48dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/etNewPassword"
+        android:textColorHint="@color/white"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvRegisterTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/tvRegisterTitle">
 
-    <EditText
-        android:id="@+id/etNewPassword"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNewUsername"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilNewPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:hint="Contraseña"
-        android:inputType="textPassword"
-        android:minHeight="48dp"
-        android:layout_marginBottom="24dp"
-        app:layout_constraintBottom_toTopOf="@+id/btnRegisterUser"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNewUsername" />
+        android:textColorHint="@color/white"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/tilNewUsername"
+        app:layout_constraintStart_toStartOf="@+id/tilNewUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tilNewUsername">
 
-    <Button
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etNewPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnRegisterUser"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
         android:text="Registrarse"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="16sp"
+        android:textColor="@color/primary_blue"
+        android:backgroundTint="@color/white"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilNewPassword"
+        app:layout_constraintStart_toStartOf="@+id/tilNewPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tilNewPassword" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoToLogin"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="¿Ya tienes cuenta? Inicia sesión"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNewPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/btnRegisterUser" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

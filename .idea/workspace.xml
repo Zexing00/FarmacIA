@@ -30,6 +30,11 @@
           <theme>@style/Theme.FarmacIA</theme>
         </config>
       </layout>
+      <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_chat_bot.xml">
+        <config>
+          <theme>@style/Theme.FarmacIA</theme>
+        </config>
+      </layout>
       <layout url="file://$PROJECT_DIR$/app/src/main/res/layout/item_medicamento.xml">
         <config>
           <theme>@style/Theme.FarmacIA</theme>
@@ -52,14 +57,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e96236d1-3992-43df-9174-1b042dc615ce" name="Changes" comment="Toda la implementación de la IA y cambio en interfaz (foto de fondo)">
-      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/button_background_blue_rounded.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/gradient_background.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/ic_medical_cross.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/inicionsesion.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/logop.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/registro.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/res/drawable/registrosesion.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/deploymentTargetSelector.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/CalendarActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/CalendarActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/PillboxActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/PillboxActivity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_medicamento.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_medicamento.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/item_medicamento_cima.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/item_medicamento_cima.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/values/colors.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/RegisterActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/example/farmacia/RegisterActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/activity_register.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/layout/activity_register.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -367,7 +376,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767562559050</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Toda la implementación de la IA y cambio en interfaz (foto de fondo)">
+      <option name="closed" value="true" />
+      <created>1768068173863</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1768068173863</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -389,7 +406,8 @@
     <MESSAGE value="Feature para añadir medicamentos al pastillero" />
     <MESSAGE value="Boton para retroceder en la activity_pillbox.xml" />
     <MESSAGE value="cifrado de contraseñas" />
-    <option name="LAST_COMMIT_MESSAGE" value="cifrado de contraseñas" />
+    <MESSAGE value="Toda la implementación de la IA y cambio en interfaz (foto de fondo)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Toda la implementación de la IA y cambio en interfaz (foto de fondo)" />
   </component>
   <component name="play_dynamic_filters_status">
     <option name="appIdToCheckInfo">

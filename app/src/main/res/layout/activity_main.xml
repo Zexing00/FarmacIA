@@ -4,124 +4,111 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient_background"
     tools:context=".MainActivity">
 
-    <!-- Imagen de fondo a pantalla completa con img_2 -->
     <ImageView
-        android:id="@+id/ivBackground"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/img_2"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:id="@+id/ivLoginLogo"
+        android:layout_width="181dp"
+        android:layout_height="158dp"
+        android:layout_marginTop="60dp"
+        android:src="@drawable/logop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="Fondo" />
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Capa de oscurecimiento para mejor contraste -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#66000000" />
+    <TextView
+        android:id="@+id/tvLoginTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Bienvenido a FarmacIA"
+        android:textColor="@android:color/white"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ivLoginLogo" />
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilUsername"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:hint="Nombre de usuario"
+        android:textColorHint="@color/white"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLoginTitle">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="32dp">
+            android:background="@android:color/transparent"
+            android:textColor="@color/white"
+            android:inputType="textPersonName" />
 
-            <!-- Título ajustado para compensar la falta del logo -->
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="120dp"
-                android:text="FarmacIA"
-                android:textColor="@color/white"
-                android:textSize="44sp"
-                android:textStyle="bold"
-                android:shadowColor="#000000"
-                android:shadowDx="2"
-                android:shadowDy="2"
-                android:shadowRadius="4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/tvSubtitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Tu salud, nuestra prioridad"
-                android:textColor="#F5F5F5"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/tilPassword"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Contraseña"
+        android:textColorHint="@color/white"
+        app:boxStrokeColor="@color/white"
+        app:hintTextColor="@color/white"
+        app:passwordToggleEnabled="true"
+        app:passwordToggleTint="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/tilUsername"
+        app:layout_constraintStart_toStartOf="@+id/tilUsername"
+        app:layout_constraintTop_toBottomOf="@+id/tilUsername">
 
-            <!-- Inputs más redonditos -->
-            <EditText
-                android:id="@+id/etUsername"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="48dp"
-                android:background="@drawable/rounded_input_background"
-                android:hint="Usuario"
-                android:inputType="textPersonName"
-                android:textColor="@color/black"
-                android:textColorHint="#757575"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvSubtitle" />
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:textColor="@color/white"
+            android:inputType="textPassword" />
 
-            <EditText
-                android:id="@+id/etPassword"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/rounded_input_background"
-                android:hint="Contraseña"
-                android:inputType="textPassword"
-                android:textColor="@color/black"
-                android:textColorHint="#757575"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etUsername" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-            <Button
-                android:id="@+id/btnLogin"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginTop="32dp"
-                android:backgroundTint="@color/primary_blue"
-                android:text="Acceder"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:cornerRadius="28dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etPassword" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:paddingTop="14dp"
+        android:paddingBottom="14dp"
+        android:text="Iniciar Sesión"
+        android:textSize="16sp"
+        android:textColor="@color/primary_blue"
+        android:backgroundTint="@color/white"
+        app:cornerRadius="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/tilPassword"
+        app:layout_constraintStart_toStartOf="@+id/tilPassword"
+        app:layout_constraintTop_toBottomOf="@+id/tilPassword" />
 
-            <Button
-                android:id="@+id/btnGoToRegister"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="¿No tienes cuenta? Regístrate"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-                style="@style/Widget.MaterialComponents.Button.TextButton"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnGoToRegister"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="¿No tienes cuenta? Regístrate"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

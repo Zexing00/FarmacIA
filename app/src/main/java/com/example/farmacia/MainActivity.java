@@ -3,7 +3,6 @@ package com.example.farmacia;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -14,15 +13,15 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.farmacia.dao.UserDAO;
-import com.example.farmacia.model.Administrator;
 import com.example.farmacia.model.User;
+import com.google.android.material.button.MaterialButton;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText etUsername;
     private EditText etPassword;
-    private Button btnLogin;
-    private Button btnGoToRegister;
+    private MaterialButton btnLogin;
+    private MaterialButton btnGoToRegister;
     private UserDAO userDAO;
 
     @Override
