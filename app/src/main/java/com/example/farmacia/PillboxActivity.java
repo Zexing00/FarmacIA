@@ -111,7 +111,8 @@ public class PillboxActivity extends AppCompatActivity {
     }
 
     private void selectDays(final Medication medication) {
-        String[] days = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+        final String[] days = {"Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado", "Domingo"};
+        final String[] daysAbrev = {"Lu", "Ma", "Mi", "Ju", "Vi", "Sa", "Do"};
         int[] calendarDays = {Calendar.MONDAY, Calendar.TUESDAY, Calendar.WEDNESDAY, Calendar.THURSDAY, Calendar.FRIDAY, Calendar.SATURDAY, Calendar.SUNDAY};
         boolean[] selected = new boolean[days.length];
         ArrayList<Integer> chosenIndices = new ArrayList<>();
@@ -128,13 +129,13 @@ public class PillboxActivity extends AppCompatActivity {
                         return;
                     }
                     Collections.sort(chosenIndices);
-                    StringBuilder sb = new StringBuilder();
+                    ArrayList<String> chosenDaysAbbr = new ArrayList<>();
                     ArrayList<Integer> finalDays = new ArrayList<>();
                     for (int i : chosenIndices) {
-                        sb.append(days[i].substring(0, 2)).append(",");
+                        chosenDaysAbbr.add(daysAbrev[i]);
                         finalDays.add(calendarDays[i]);
                     }
-                    String daysStr = sb.substring(0, sb.length() - 1);
+                    String daysStr = String.join(",", chosenDaysAbbr);
                     selectHours(medication, daysStr, finalDays);
                 })
                 .setNegativeButton("Atrás", null)
@@ -168,7 +169,7 @@ public class PillboxActivity extends AppCompatActivity {
 
     private void saveDoseAndAlarms(Medication med, String freqLabel, ArrayList<Integer> days, ArrayList<String> hoursStr, ArrayList<Integer[]> hoursMin) {
         Collections.sort(hoursStr);
-        String finalDose = freqLabel + " a las " + hoursStr.toString().replace("[", "").replace("]", "");
+        String finalDose = freqLabel + " a las " + String.join(", ", hoursStr);
 
         pillboxDAO.updatePillbox(userId, med.getId(), null, finalDose);
 
@@ -196,7 +197,6 @@ public class PillboxActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AlarmReceiver.class);
         intent.putExtra("MED_NAME", medName);
 
-        // Unique request code for each alarm based on name and time to avoid overwriting
         int requestCode = (medName + dayOfWeek + hour + minute).hashCode();
         PendingIntent pi = PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -209,7 +209,6 @@ public class PillboxActivity extends AppCompatActivity {
             calendar.set(Calendar.DAY_OF_WEEK, dayOfWeek);
         }
 
-        // If the time has already passed today, schedule for tomorrow or next week
         if (calendar.getTimeInMillis() <= System.currentTimeMillis()) {
             if (dayOfWeek == -1) {
                 calendar.add(Calendar.DAY_OF_YEAR, 1);

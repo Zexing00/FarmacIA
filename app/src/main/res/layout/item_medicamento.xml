@@ -44,17 +44,15 @@
             style="@style/Widget.MaterialComponents.Button"
             android:visibility="gone"/>
 
-        <Button
+        <!-- Botón simplificado y con nuevo estilo -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnResumenInteligente"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Resumen inteligente"
             android:layout_marginTop="12dp"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/primary_blue"
-            style="@style/Widget.MaterialComponents.Button" />
-
+            android:text="Resumen"
+            android:backgroundTint="@color/accent_green"
+            app:cornerRadius="16dp" />
 
         <View
             android:layout_width="match_parent"

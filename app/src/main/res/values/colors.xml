@@ -6,6 +6,7 @@
     <color name="secondary_blue">#64B5F6</color>
     <color name="accent_yellow">#FFD54F</color>
     <color name="accent_dark_yellow">#FBC02D</color>
+    <color name="accent_green">#4CAF50</color> <!-- Nuevo color verde -->
 
     <!-- Colores funcionales (Modo Claro) -->
     <color name="app_background">#F0F7FF</color>
