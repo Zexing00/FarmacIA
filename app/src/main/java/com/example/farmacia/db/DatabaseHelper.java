@@ -7,68 +7,68 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "farmacia.db";
-    private static final int DATABASE_VERSION = 4; // Aseguramos versión 4
+    private static final int DATABASE_VERSION = 5; // Incremented to trigger onUpgrade
 
-    // Tabla Usuarios
-    public static final String TABLE_USUARIOS = "usuarios";
+    // User Table
+    public static final String TABLE_USERS = "users";
     public static final String COLUMN_ID = "id";
-    public static final String COLUMN_NOMBRE_USUARIO = "nombre_usuario";
-    public static final String COLUMN_CONTRASENA = "contrasena";
-    public static final String COLUMN_ES_ADMIN = "es_admin";
+    public static final String COLUMN_USER_NAME = "username";
+    public static final String COLUMN_PASSWORD = "password";
+    public static final String COLUMN_IS_ADMIN = "is_admin";
 
-    // Tabla Medicamentos
-    public static final String TABLE_MEDICAMENTOS = "medicamentos";
+    // Medication Table
+    public static final String TABLE_MEDICATIONS = "medications";
     public static final String COLUMN_MED_ID = "id";
-    public static final String COLUMN_MED_NOMBRE = "nombre";
-    public static final String COLUMN_MED_PROSPECTO = "prospecto";
+    public static final String COLUMN_MED_NAME = "name";
+    public static final String COLUMN_MED_LEAFLET = "leaflet";
 
-    // Tabla Pastillero (Relación Usuario - Medicamento)
-    public static final String TABLE_PASTILLERO = "pastillero";
-    public static final String COLUMN_PAST_ID = "id";
-    public static final String COLUMN_PAST_USER_ID = "usuario_id";
-    public static final String COLUMN_PAST_MED_ID = "medicamento_id";
-    public static final String COLUMN_PAST_CADUCIDAD = "fecha_caducidad";
-    public static final String COLUMN_PAST_DOSIS = "dosis_semanal";
+    // Pillbox Table (User-Medication Relationship)
+    public static final String TABLE_PILLBOX = "pillbox";
+    public static final String COLUMN_PILLBOX_ID = "id";
+    public static final String COLUMN_PILLBOX_USER_ID = "user_id";
+    public static final String COLUMN_PILLBOX_MED_ID = "medication_id";
+    public static final String COLUMN_PILLBOX_EXPIRY_DATE = "expiry_date";
+    public static final String COLUMN_PILLBOX_WEEKLY_DOSE = "weekly_dose";
+    
+    // Caregivers Table (Patient-Caregiver Relationship)
+    public static final String TABLE_CAREGIVERS = "caregivers";
+    public static final String COLUMN_CG_ID = "id";
+    public static final String COLUMN_CG_PATIENT_ID = "patient_id";
+    public static final String COLUMN_CG_CAREGIVER_ID = "caregiver_id";
 
-    // Nueva Tabla Cuidadores (Relación Paciente - Cuidador)
-    public static final String TABLE_CUIDADORES = "cuidadores";
-    public static final String COLUMN_CUID_ID = "id";
-    public static final String COLUMN_CUID_PACIENTE_ID = "paciente_id";
-    public static final String COLUMN_CUID_CUIDADOR_ID = "cuidador_id";
-
-    private static final String TABLE_CREATE_USUARIOS =
-            "CREATE TABLE " + TABLE_USUARIOS + " (" +
+    private static final String TABLE_CREATE_USERS =
+            "CREATE TABLE " + TABLE_USERS + " (" +
             COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_NOMBRE_USUARIO + " TEXT, " +
-            COLUMN_CONTRASENA + " TEXT, " +
-            COLUMN_ES_ADMIN + " INTEGER DEFAULT 0" +
+            COLUMN_USER_NAME + " TEXT, " +
+            COLUMN_PASSWORD + " TEXT, " +
+            COLUMN_IS_ADMIN + " INTEGER DEFAULT 0" +
             ");";
 
-    private static final String TABLE_CREATE_MEDICAMENTOS =
-            "CREATE TABLE " + TABLE_MEDICAMENTOS + " (" +
+    private static final String TABLE_CREATE_MEDICATIONS =
+            "CREATE TABLE " + TABLE_MEDICATIONS + " (" +
             COLUMN_MED_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_MED_NOMBRE + " TEXT, " +
-            COLUMN_MED_PROSPECTO + " TEXT" +
+            COLUMN_MED_NAME + " TEXT, " +
+            COLUMN_MED_LEAFLET + " TEXT" +
             ");";
 
-    private static final String TABLE_CREATE_PASTILLERO =
-            "CREATE TABLE " + TABLE_PASTILLERO + " (" +
-            COLUMN_PAST_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_PAST_USER_ID + " INTEGER, " +
-            COLUMN_PAST_MED_ID + " INTEGER, " +
-            COLUMN_PAST_CADUCIDAD + " TEXT, " +
-            COLUMN_PAST_DOSIS + " TEXT, " +
-            "FOREIGN KEY(" + COLUMN_PAST_USER_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "), " +
-            "FOREIGN KEY(" + COLUMN_PAST_MED_ID + ") REFERENCES " + TABLE_MEDICAMENTOS + "(" + COLUMN_MED_ID + ")" +
+    private static final String TABLE_CREATE_PILLBOX =
+            "CREATE TABLE " + TABLE_PILLBOX + " (" +
+            COLUMN_PILLBOX_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_PILLBOX_USER_ID + " INTEGER, " +
+            COLUMN_PILLBOX_MED_ID + " INTEGER, " +
+            COLUMN_PILLBOX_EXPIRY_DATE + " TEXT, " +
+            COLUMN_PILLBOX_WEEKLY_DOSE + " TEXT, " +
+            "FOREIGN KEY(" + COLUMN_PILLBOX_USER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_ID + "), " +
+            "FOREIGN KEY(" + COLUMN_PILLBOX_MED_ID + ") REFERENCES " + TABLE_MEDICATIONS + "(" + COLUMN_MED_ID + ")" +
             ");";
 
-    private static final String TABLE_CREATE_CUIDADORES =
-            "CREATE TABLE " + TABLE_CUIDADORES + " (" +
-            COLUMN_CUID_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            COLUMN_CUID_PACIENTE_ID + " INTEGER, " +
-            COLUMN_CUID_CUIDADOR_ID + " INTEGER, " +
-            "FOREIGN KEY(" + COLUMN_CUID_PACIENTE_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + "), " +
-            "FOREIGN KEY(" + COLUMN_CUID_CUIDADOR_ID + ") REFERENCES " + TABLE_USUARIOS + "(" + COLUMN_ID + ")" +
+    private static final String TABLE_CREATE_CAREGIVERS =
+            "CREATE TABLE " + TABLE_CAREGIVERS + " (" +
+            COLUMN_CG_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            COLUMN_CG_PATIENT_ID + " INTEGER, " +
+            COLUMN_CG_CAREGIVER_ID + " INTEGER, " +
+            "FOREIGN KEY(" + COLUMN_CG_PATIENT_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_ID + "), " +
+            "FOREIGN KEY(" + COLUMN_CG_CAREGIVER_ID + ") REFERENCES " + TABLE_USERS + "(" + COLUMN_ID + ")" +
             ");";
 
     public DatabaseHelper(Context context) {
@@ -77,31 +77,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(TABLE_CREATE_USUARIOS);
-        db.execSQL(TABLE_CREATE_MEDICAMENTOS);
-        db.execSQL(TABLE_CREATE_PASTILLERO);
-        db.execSQL(TABLE_CREATE_CUIDADORES); // Importante: Crear la nueva tabla
+        db.execSQL(TABLE_CREATE_USERS);
+        db.execSQL(TABLE_CREATE_MEDICATIONS);
+        db.execSQL(TABLE_CREATE_PILLBOX);
+        db.execSQL(TABLE_CREATE_CAREGIVERS);
 
-        // Datos iniciales
-        db.execSQL("INSERT INTO " + TABLE_USUARIOS + " (" + COLUMN_NOMBRE_USUARIO + ", " + COLUMN_CONTRASENA + ", " + COLUMN_ES_ADMIN + ") VALUES ('admin', 'admin', 1);");
-        db.execSQL("INSERT INTO " + TABLE_USUARIOS + " (" + COLUMN_NOMBRE_USUARIO + ", " + COLUMN_CONTRASENA + ", " + COLUMN_ES_ADMIN + ") VALUES ('user', 'user', 0);");
-        db.execSQL("INSERT INTO " + TABLE_USUARIOS + " (" + COLUMN_NOMBRE_USUARIO + ", " + COLUMN_CONTRASENA + ", " + COLUMN_ES_ADMIN + ") VALUES ('hijo', '1234', 0);");
+        // Initial data - Note: UI text can remain in Spanish
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + COLUMN_USER_NAME + ", " + COLUMN_PASSWORD + ", " + COLUMN_IS_ADMIN + ") VALUES ('admin', 'admin', 1);");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + COLUMN_USER_NAME + ", " + COLUMN_PASSWORD + ", " + COLUMN_IS_ADMIN + ") VALUES ('user', 'user', 0);");
+        db.execSQL("INSERT INTO " + TABLE_USERS + " (" + COLUMN_USER_NAME + ", " + COLUMN_PASSWORD + ", " + COLUMN_IS_ADMIN + ") VALUES ('hijo', '1234', 0);");
 
-        db.execSQL("INSERT INTO " + TABLE_MEDICAMENTOS + " (" + COLUMN_MED_NOMBRE + ", " + COLUMN_MED_PROSPECTO + ") VALUES ('Ibuprofeno', 'Tomar cada 8 horas con comida. Antiinflamatorio.');");
-        db.execSQL("INSERT INTO " + TABLE_MEDICAMENTOS + " (" + COLUMN_MED_NOMBRE + ", " + COLUMN_MED_PROSPECTO + ") VALUES ('Paracetamol', 'Tomar cada 6-8 horas para el dolor o fiebre.');");
-        db.execSQL("INSERT INTO " + TABLE_MEDICAMENTOS + " (" + COLUMN_MED_NOMBRE + ", " + COLUMN_MED_PROSPECTO + ") VALUES ('Amoxicilina', 'Antibiótico. Completar el tratamiento. Tomar cada 12 horas.');");
+        db.execSQL("INSERT INTO " + TABLE_MEDICATIONS + " (" + COLUMN_MED_NAME + ", " + COLUMN_MED_LEAFLET + ") VALUES ('Ibuprofeno', 'Tomar cada 8 horas con comida. Antiinflamatorio.');");
+        db.execSQL("INSERT INTO " + TABLE_MEDICATIONS + " (" + COLUMN_MED_NAME + ", " + COLUMN_MED_LEAFLET + ") VALUES ('Paracetamol', 'Tomar cada 6-8 horas para el dolor o fiebre.');");
+        db.execSQL("INSERT INTO " + TABLE_MEDICATIONS + " (" + COLUMN_MED_NAME + ", " + COLUMN_MED_LEAFLET + ") VALUES ('Amoxicilina', 'Antibiótico. Completar el tratamiento. Tomar cada 12 horas.');");
         
-        db.execSQL("INSERT INTO " + TABLE_PASTILLERO + " (" + COLUMN_PAST_USER_ID + ", " + COLUMN_PAST_MED_ID + ", " + COLUMN_PAST_CADUCIDAD + ", " + COLUMN_PAST_DOSIS + ") VALUES (2, 1, '2025-12-31', '3 veces al día');");
-        db.execSQL("INSERT INTO " + TABLE_PASTILLERO + " (" + COLUMN_PAST_USER_ID + ", " + COLUMN_PAST_MED_ID + ") VALUES (2, 3);");
+        db.execSQL("INSERT INTO " + TABLE_PILLBOX + " (" + COLUMN_PILLBOX_USER_ID + ", " + COLUMN_PILLBOX_MED_ID + ", " + COLUMN_PILLBOX_EXPIRY_DATE + ", " + COLUMN_PILLBOX_WEEKLY_DOSE + ") VALUES (2, 1, '2025-12-31', '3 veces al día');");
+        db.execSQL("INSERT INTO " + TABLE_PILLBOX + " (" + COLUMN_PILLBOX_USER_ID + ", " + COLUMN_PILLBOX_MED_ID + ") VALUES (2, 3);");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // En desarrollo simplificado: borrar todo y recrear
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CUIDADORES);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PASTILLERO);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MEDICAMENTOS);
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USUARIOS);
+        // Simplified development approach: drop everything and recreate
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_CAREGIVERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_PILLBOX);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_MEDICATIONS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         onCreate(db);
     }
 }

@@ -8,14 +8,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.farmacia.dao.UsuarioDAO;
+import com.example.farmacia.dao.UserDAO;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etUsername;
     private EditText etPassword;
     private Button btnRegister;
-    private UsuarioDAO usuarioDAO;
+    private UserDAO userDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,8 @@ public class RegisterActivity extends AppCompatActivity {
         etPassword = findViewById(R.id.etNewPassword);
         btnRegister = findViewById(R.id.btnRegisterUser);
 
-        usuarioDAO = new UsuarioDAO(this);
-        usuarioDAO.open();
+        userDAO = new UserDAO(this);
+        userDAO.open();
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,15 +40,15 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
-                if (usuarioDAO.existeUsuario(username)) {
+                if (userDAO.userExists(username)) {
                     Toast.makeText(RegisterActivity.this, "El nombre de usuario ya existe", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                long result = usuarioDAO.registrarUsuario(username, password, false);
+                long result = userDAO.registerUser(username, password, false);
                 if (result != -1) {
                     Toast.makeText(RegisterActivity.this, "Usuario registrado exitosamente", Toast.LENGTH_SHORT).show();
-                    finish(); // Vuelve a la pantalla de login
+                    finish(); // Go back to the login screen
                 } else {
                     Toast.makeText(RegisterActivity.this, "Error al registrar usuario", Toast.LENGTH_SHORT).show();
                 }
@@ -59,8 +59,8 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (usuarioDAO != null) {
-            usuarioDAO.close();
+        if (userDAO != null) {
+            userDAO.close();
         }
     }
 }
