@@ -4,21 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/home_gradient_background"
     tools:context=".HomeActivity">
-
-    <!-- Nuevo fondo: fondomenu -->
-    <ImageView
-        android:id="@+id/imgBg"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:src="@drawable/fondomenu"
-        android:scaleType="centerCrop"
-        android:alpha="0.25"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@null" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -34,96 +21,109 @@
                 android:id="@+id/tvWelcome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Bienvenido"
-                android:textColor="@color/primary_dark_blue"
-                android:textSize="28sp"
-                android:textStyle="bold"
                 android:layout_marginTop="48dp"
+                android:shadowColor="#40000000"
+                android:shadowDy="2"
+                android:shadowRadius="4"
+                android:text="Bienvenido"
+                android:textColor="@android:color/white"
+                android:textSize="32sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Los "Tres Grandes" con el mismo tamaño y redondeado -->
-            <Button
+            <!-- Botones con efecto Liquid Glass -->
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnCalendar"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="85dp"
-                android:text="📅 Mi Calendario"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/primary_blue"
                 android:layout_marginTop="32dp"
-                app:cornerRadius="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWelcome" />
-
-            <Button
-                android:id="@+id/btnPillbox"
-                android:layout_width="0dp"
-                android:layout_height="85dp"
-                android:text="💊 Mi Pastillero"
+                android:backgroundTint="#99FFFFFF" 
+                android:text="Mi Calendario"
                 android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:textColor="@color/white"
-                android:backgroundTint="@color/secondary_blue"
-                android:layout_marginTop="16dp"
-                app:cornerRadius="32dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnCalendar" />
-
-            <Button
-                android:id="@+id/btnMedications"
-                android:layout_width="0dp"
-                android:layout_height="85dp"
-                android:text="🔍 Buscador"
-                android:textAllCaps="false"
-                android:textSize="18sp"
-                android:textStyle="bold"
                 android:textColor="@color/primary_dark_blue"
-                android:backgroundTint="@color/accent_yellow"
-                android:layout_marginTop="16dp"
-                app:cornerRadius="32dp"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="24dp"
+                app:strokeColor="#B3FFFFFF"
+                app:strokeWidth="1dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnPillbox" />
+                app:layout_constraintTop_toBottomOf="@+id/tvWelcome"/>
 
-            <!-- Sección de IA con estilo diferenciado -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPillbox"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#99FFB6C1"
+                android:text="Mi Pastillero"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_dark_blue"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="24dp"
+                app:strokeColor="#B3FFFFFF"
+                app:strokeWidth="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnCalendar"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnMedications"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="85dp"
+                android:layout_marginTop="16dp"
+                android:backgroundTint="#99FFEB3B"
+                android:text="Buscador"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_dark_blue"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:cornerRadius="24dp"
+                app:strokeColor="#B3FFFFFF"
+                app:strokeWidth="1dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btnPillbox"/>
+
+            <!-- Botón de IA destacado (no glass) -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnIA"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="✨ Consultar IA"
-                android:textAllCaps="false"
-                android:textSize="16sp"
+                android:layout_marginTop="32dp"
+                android:backgroundTint="@android:color/white"
                 android:paddingHorizontal="32dp"
                 android:paddingVertical="12dp"
-                android:backgroundTint="@color/primary_dark_blue"
-                android:textColor="@color/white"
-                android:layout_marginTop="32dp"
+                android:text="Consultar IA"
+                android:textAllCaps="false"
+                android:textColor="@color/primary_dark_blue"
+                android:textSize="16sp"
                 app:cornerRadius="24dp"
                 app:icon="@android:drawable/ic_menu_help"
+                app:iconTint="@color/primary_dark_blue"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnMedications" />
 
-            <!-- Gestión de Cuidadores más sutil -->
+            <!-- Gestión de Cuidadores con efecto Glass -->
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardCuidadores"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="48dp"
                 android:layout_marginBottom="32dp"
+                app:cardBackgroundColor="#99FFFFFF"
                 app:cardCornerRadius="24dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="1dp"
-                app:strokeColor="@color/divider_color"
-                app:cardBackgroundColor="#1A2196F3"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnIA"
-                app:layout_constraintBottom_toBottomOf="parent">
+                app:strokeColor="#B3FFFFFF"
+                app:strokeWidth="1dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -134,11 +134,11 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
                         android:text="Cuidadores y Pacientes"
                         android:textColor="@color/primary_dark_blue"
-                        android:textSize="16sp"
                         android:textStyle="bold"
-                        android:layout_marginBottom="16dp" />
+                        android:textSize="16sp"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -147,25 +147,27 @@
 
                         <Button
                             android:id="@+id/btnShareAccess"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="8dp"
                             android:layout_weight="1"
                             android:text="Dar Acceso"
                             android:textAllCaps="false"
-                            android:layout_marginEnd="8dp"
-                            app:cornerRadius="16dp"
-                            style="@style/Widget.MaterialComponents.Button.TextButton" />
+                            android:textColor="@color/primary_dark_blue"
+                            app:cornerRadius="16dp" />
 
                         <Button
                             android:id="@+id/btnManagePatients"
+                            style="@style/Widget.MaterialComponents.Button.TextButton"
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
                             android:layout_weight="1"
                             android:text="Mis Pacientes"
                             android:textAllCaps="false"
-                            android:layout_marginStart="8dp"
-                            app:cornerRadius="16dp"
-                            style="@style/Widget.MaterialComponents.Button.TextButton" />
+                            android:textColor="@color/primary_dark_blue"
+                            app:cornerRadius="16dp" />
                     </LinearLayout>
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
