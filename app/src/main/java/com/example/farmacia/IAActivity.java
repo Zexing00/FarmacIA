@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -31,11 +32,13 @@ import retrofit2.Response;
 
 public class IAActivity extends AppCompatActivity {
 
+    private static final String TAG = "IAActivity";
+
     private RecyclerView rvChat;
 
     private View panelInput;
     private EditText etInput;
-    private Button btnSend;
+    private ImageButton btnSend;
 
     private Button btnPickMed;
 
@@ -76,6 +79,9 @@ public class IAActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ia);
 
+        ImageButton btnIaBack = findViewById(R.id.btnIaBack);
+        btnIaBack.setOnClickListener(v -> finish());
+
         rvChat = findViewById(R.id.rvChat);
 
         panelInput = findViewById(R.id.panelInput);
@@ -100,8 +106,6 @@ public class IAActivity extends AppCompatActivity {
         rvChat.setAdapter(adapter);
 
         panelInput.setVisibility(View.GONE);
-        btnSend.setEnabled(false);
-        etInput.setEnabled(false);
 
         currentUserId = getIntent().getIntExtra("USER_ID", -1);
 
@@ -333,16 +337,20 @@ public class IAActivity extends AppCompatActivity {
     }
 
     private String buildAllergiesPrompt(String medName) {
-        return "Eres un médico cercano y amable. Responde en español.\n\n" +
+        return "Eres un asistente farmacéutico virtual, amable y cercano. Responde en español.\n" +
+                "NUNCA te presentes como un médico ni des consejos médicos. Tu único rol es dar información del prospecto de forma sencilla.\n" +
+                "SIEMPRE, al final de tu respuesta, recuerda al usuario que debe consultar a su médico o farmacéutico para cualquier duda de salud.\n\n" +
                 "Medicamento: " + medName + "\n\n" +
                 "Da la respuesta directa, sencilla, sin tecnicismos.\n" +
-                "Habla solo de alergias posibles, efectos secundarios importantes y señales para pedir ayuda.\n" +
+                "Habla solo de alergias posibles, efectos secundarios importantes y señales para pedir ayuda profesional.\n" +
                 "No uses asteriscos dobles ** porque no se ven en el chat.\n" +
                 "Usa 4 a 6 viñetas cortas y claras.";
     }
 
     private String buildFoodAlcoholPrompt(String medName) {
-        return "Eres un médico cercano y amable. Responde en español.\n\n" +
+        return "Eres un asistente farmacéutico virtual, amable y cercano. Responde en español.\n" +
+                "NUNCA te presentes como un médico ni des consejos médicos. Tu único rol es dar información del prospecto de forma sencilla.\n" +
+                "SIEMPRE, al final de tu respuesta, recuerda al usuario que debe consultar a su médico o farmacéutico para cualquier duda de salud.\n\n" +
                 "Medicamento: " + medName + "\n\n" +
                 "Da la respuesta directa, sencilla, sin tecnicismos.\n" +
                 "Habla solo de alimentos que puedan dar problema (si los hay) y alcohol (si se puede o no) y consejos simples.\n" +
@@ -352,7 +360,9 @@ public class IAActivity extends AppCompatActivity {
     }
 
     private String buildInteractionsPrompt(String med1, String med2) {
-        return "Eres un médico cercano y amable. Responde en español.\n\n" +
+        return "Eres un asistente farmacéutico virtual, amable y cercano. Responde en español.\n" +
+                "NUNCA te presentes como un médico ni des consejos médicos. Tu único rol es dar información del prospecto de forma sencilla.\n" +
+                "SIEMPRE, al final de tu respuesta, recuerda al usuario que debe consultar a su médico o farmacé-eutico para cualquier duda de salud.\n\n" +
                 "Medicamento 1: " + med1 + "\n" +
                 "Medicamento 2: " + med2 + "\n\n" +
                 "Da la respuesta directa, sencilla, sin tecnicismos.\n" +
@@ -363,45 +373,49 @@ public class IAActivity extends AppCompatActivity {
     }
 
     private String buildSummaryPrompt(String medName) {
-        return "Eres un médico cercano y amable. Explica de forma sencilla para personas mayores. Responde en español. " +
-                "Explicalo de una manera objetiva como un profesional, sin tecnicismos y sin ser coloquial, como si estuvieras haciendo un resumen neutro.\n" +
+        return "Eres un asistente farmacéutico virtual. Explica de forma sencilla para personas mayores. Responde en español. " +
+                "Explícalo de una manera objetiva como un profesional, sin tecnicismos y sin ser coloquial, como si estuvieras haciendo un resumen neutro.\n" +
+                "NUNCA te presentes como un médico ni des consejos médicos. Tu único rol es resumir la información.\n" +
                 "No uses asteriscos dobles ** ni negritas y no uses listas ni viñetas.\n\n" +
                 "Medicamento: " + medName + "\n\n" +
                 "Escribe exactamente dos párrafos cortos. En el primero explica para qué sirve y en qué casos se usa normalmente. " +
                 "No des consejos de uso, solamente el resumen del medicamento";
     }
 
+    private String getFriendlyErrorMessage(int code) {
+        switch (code) {
+            case 400:
+                return "(Error 400) La petición no es válida. Revisa la pregunta.";
+            case 404:
+                return "(Error 404) No se ha encontrado el modelo de IA solicitado.";
+            case 429:
+                return "(Error 429) Has superado el límite de consultas. Por favor, espera un minuto antes de volver a intentarlo.";
+            case 500:
+            case 503:
+                return "(Error " + code + ") El servicio de IA no está disponible en este momento. Inténtalo de nuevo más tarde.";
+            default:
+                return "(Error " + code + ") Ha ocurrido un problema inesperado con el servicio de IA.";
+        }
+    }
+
     private void sendPromptToAI(String prompt) {
-        int typingIndex = addBot("Escribiendo...");
+        showWaitingAI();
+        int typingIndex = addBot("Pensando... 🤖");
+
+        String modelName = "gemini-flash-latest";
 
         GeminiService service = GeminiApiClient.getGeminiService();
         GeminiRequest request = new GeminiRequest(prompt);
 
-        Call<GeminiResponse> call = service.generateContent("gemini-2.5-flash", request);
+        Call<GeminiResponse> call = service.generateContent(modelName, request);
 
         call.enqueue(new Callback<GeminiResponse>() {
             @Override
             public void onResponse(Call<GeminiResponse> call, Response<GeminiResponse> response) {
                 runOnUiThread(() -> {
                     if (!response.isSuccessful()) {
-                        int code = response.code();
-                        String detail = "";
-                        try { if (response.errorBody() != null) detail = response.errorBody().string(); } catch (Exception ignored) {}
-
-                        if (code == 429) {
-                            messages.set(typingIndex, new ChatMessage(ChatMessage.SENDER_BOT,
-                                    "Estoy recibiendo muchas consultas seguidas. Espera 10 segundos y prueba otra vez."));
-                            adapter.notifyItemChanged(typingIndex);
-                            scrollToBottom();
-
-                            if (!isSummaryMode) {
-                                rvChat.postDelayed(() -> IAActivity.this.showMenu(), 10000);
-                            }
-                            return;
-                        }
-
-                        messages.set(typingIndex, new ChatMessage(ChatMessage.SENDER_BOT,
-                                "Error: HTTP " + code + (detail.isEmpty() ? "" : "\n" + detail)));
+                        String errorMessage = getFriendlyErrorMessage(response.code());
+                        messages.set(typingIndex, new ChatMessage(ChatMessage.SENDER_BOT, errorMessage));
                         adapter.notifyItemChanged(typingIndex);
                         scrollToBottom();
 

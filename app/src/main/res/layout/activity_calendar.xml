@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background"
+    android:background="@drawable/calendar_gradient_background"
     tools:context=".CalendarActivity">
 
     <ImageButton
@@ -16,14 +16,17 @@
         android:src="@android:drawable/ic_menu_revert"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/primary_blue" />
+        app:tint="@android:color/white" />
 
     <TextView
         android:id="@+id/tvCalendarTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Mi Agenda Semanal"
-        android:textColor="@color/primary_dark_blue"
+        android:textColor="@android:color/white"
+        android:shadowColor="#40000000"
+        android:shadowDy="2"
+        android:shadowRadius="4"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/btnCalendarBack"
@@ -36,17 +39,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:padding="16dp"
-        android:weightSum="7"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="16dp"
+        android:clipToPadding="false"
         app:layout_constraintTop_toBottomOf="@+id/btnCalendarBack">
 
-        <Button android:id="@+id/btnLu" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="L" android:padding="0dp" />
-        <Button android:id="@+id/btnMa" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="M" android:padding="0dp" />
-        <Button android:id="@+id/btnMi" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="X" android:padding="0dp" />
-        <Button android:id="@+id/btnJu" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="J" android:padding="0dp" />
-        <Button android:id="@+id/btnVi" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="V" android:padding="0dp" />
-        <Button android:id="@+id/btnSa" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="S" android:padding="0dp" />
-        <Button android:id="@+id/btnDo" style="?attr/materialButtonOutlinedStyle" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:text="D" android:padding="0dp" />
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnLu" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:text="L" android:textColor="@color/primary_dark_blue" android:backgroundTint="#B3FFFFFF" app:cornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#CCFFFFFF"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnMa" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:text="M" android:textColor="@color/primary_dark_blue" android:backgroundTint="#B3FFFFFF" app:cornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#CCFFFFFF"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnMi" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:text="X" android:textColor="@color/primary_dark_blue" android:backgroundTint="#B3FFFFFF" app:cornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#CCFFFFFF"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnJu" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:text="J" android:textColor="@color/primary_dark_blue" android:backgroundTint="#B3FFFFFF" app:cornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#CCFFFFFF"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnVi" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:text="V" android:textColor="@color/primary_dark_blue" android:backgroundTint="#B3FFFFFF" app:cornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#CCFFFFFF"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnSa" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:text="S" android:textColor="@color/primary_dark_blue" android:backgroundTint="#B3FFFFFF" app:cornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#CCFFFFFF"/>
+        <com.google.android.material.button.MaterialButton android:id="@+id/btnDo" style="@style/Widget.MaterialComponents.Button.OutlinedButton" android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1" android:layout_marginHorizontal="4dp" android:text="D" android:textColor="@color/primary_dark_blue" android:backgroundTint="#B3FFFFFF" app:cornerRadius="16dp" app:strokeWidth="1dp" app:strokeColor="#CCFFFFFF"/>
     </LinearLayout>
 
     <TextView
@@ -54,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tomas para hoy"
-        android:textColor="@color/text_secondary"
+        android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textStyle="italic"
         android:layout_marginStart="16dp"

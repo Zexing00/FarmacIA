@@ -28,9 +28,8 @@ import java.util.Locale;
 
 public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.MedicationViewHolder> {
 
-    private List<Medication> medicationList;
-    private OnItemClickListener listener;
-
+    private final List<Medication> medicationList;
+    private final OnItemClickListener listener;
     private int userId = -1;
 
     public interface OnItemClickListener {
@@ -68,35 +67,38 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
 
     public static class MedicationViewHolder extends RecyclerView.ViewHolder {
         TextView tvName;
-        TextView tvLeaflet;
-        Button btnViewLeafletPDF;
         TextView tvDose;
         TextView tvExpiry;
-        Button btnSmartSummary;
+        Button btnVerProspecto;
+        Button btnResumenInteligente;
 
         public MedicationViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.tvMedName);
-            tvLeaflet = itemView.findViewById(R.id.tvMedProspect);
-            btnViewLeafletPDF = itemView.findViewById(R.id.btnVerProspectoPDF);
             tvDose = itemView.findViewById(R.id.tvMedDosis);
             tvExpiry = itemView.findViewById(R.id.tvMedCaducidad);
-            btnSmartSummary = itemView.findViewById(R.id.btnResumenInteligente);
+            btnVerProspecto = itemView.findViewById(R.id.btnVerProspecto);
+            btnResumenInteligente = itemView.findViewById(R.id.btnResumenInteligente);
         }
 
         public void bind(final Medication medication, final OnItemClickListener listener, final int userId) {
             Context context = itemView.getContext();
 
             tvName.setText(medication.getName());
+            tvDose.setText("Dosis: " + (medication.getWeeklyDose() != null ? medication.getWeeklyDose() : "No definida"));
 
-            tvLeaflet.setVisibility(View.GONE);
-            btnViewLeafletPDF.setVisibility(View.GONE);
+            String expiryDateStr = medication.getExpiryDate();
+            tvExpiry.setText("Caducidad: " + (expiryDateStr != null ? expiryDateStr : "--/--"));
+            tvExpiry.setTextColor(ContextCompat.getColor(context, R.color.primary_dark_blue));
+
+            checkExpiryAlert(medication, context);
+
+            itemView.setOnClickListener(v -> listener.onItemClick(medication));
 
             final String leafletInfo = medication.getLeaflet();
-
-            if (leafletInfo != null && leafletInfo.contains("http")) {
-                btnViewLeafletPDF.setVisibility(View.VISIBLE);
-                btnViewLeafletPDF.setOnClickListener(v -> {
+            if (leafletInfo != null && leafletInfo.startsWith("http")) {
+                btnVerProspecto.setVisibility(View.VISIBLE);
+                btnVerProspecto.setOnClickListener(v -> {
                     try {
                         Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(leafletInfo));
                         context.startActivity(browserIntent);
@@ -104,47 +106,41 @@ public class MedicationAdapter extends RecyclerView.Adapter<MedicationAdapter.Me
                         Toast.makeText(context, "No se pudo abrir el enlace", Toast.LENGTH_SHORT).show();
                     }
                 });
-            } else if (leafletInfo != null && !leafletInfo.isEmpty()) {
-                tvLeaflet.setVisibility(View.VISIBLE);
-                tvLeaflet.setText(leafletInfo);
+            } else {
+                btnVerProspecto.setVisibility(View.GONE);
             }
 
-            tvDose.setText("Dosis: " + (medication.getWeeklyDose() != null ? medication.getWeeklyDose() : "No definida"));
-            tvExpiry.setText("Caducidad: " + (medication.getExpiryDate() != null ? medication.getExpiryDate() : "--/--"));
-
-            checkExpiryAlert(medication, context);
-
-            itemView.setOnClickListener(v -> listener.onItemClick(medication));
-
-            btnSmartSummary.setOnClickListener(v -> {
-                Intent i = new Intent(v.getContext(), IAActivity.class);
-                i.putExtra("USER_ID", userId);
-                i.putExtra("IA_MODE", "RESUMEN");
-                i.putExtra("MED_NAME", medication.getName());
-                v.getContext().startActivity(i);
-            });
+            if (userId != -1) {
+                btnResumenInteligente.setVisibility(View.VISIBLE);
+                btnResumenInteligente.setOnClickListener(v -> {
+                    Intent i = new Intent(v.getContext(), IAActivity.class);
+                    i.putExtra("USER_ID", userId);
+                    i.putExtra("IA_MODE", "RESUMEN");
+                    i.putExtra("MED_NAME", medication.getName());
+                    v.getContext().startActivity(i);
+                });
+            } else {
+                btnResumenInteligente.setVisibility(View.GONE);
+            }
         }
 
         private void checkExpiryAlert(Medication m, Context context) {
             String dateStr = m.getExpiryDate();
-            if (dateStr != null && !dateStr.isEmpty()) {
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-                try {
-                    Date expiryDate = sdf.parse(dateStr);
-                    Calendar nextWeek = Calendar.getInstance();
-                    nextWeek.add(Calendar.DAY_OF_YEAR, 7);
+            if (dateStr == null || dateStr.isEmpty()) {
+                return;
+            }
 
-                    if (expiryDate != null && expiryDate.before(nextWeek.getTime())) {
-                        tvExpiry.setTextColor(Color.RED);
-                        tvExpiry.setText("⚠️ " + tvExpiry.getText());
-                    } else {
-                        tvExpiry.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark));
-                    }
-                } catch (ParseException ignored) {
-                    tvExpiry.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark));
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            try {
+                Date expiryDate = sdf.parse(dateStr);
+                Calendar nextWeek = Calendar.getInstance();
+                nextWeek.add(Calendar.DAY_OF_YEAR, 7);
+
+                if (expiryDate != null && expiryDate.before(nextWeek.getTime())) {
+                    tvExpiry.setTextColor(Color.RED);
+                    tvExpiry.setText("⚠️ Caducidad: " + dateStr);
                 }
-            } else {
-                tvExpiry.setTextColor(ContextCompat.getColor(context, android.R.color.holo_red_dark));
+            } catch (ParseException ignored) {
             }
         }
     }

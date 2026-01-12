@@ -26,16 +26,19 @@ import com.example.farmacia.receiver.AlarmReceiver;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-public class PillboxActivity extends AppCompatActivity {
+public class PillboxActivity extends AppCompatActivity implements ListBottomSheetFragment.OnOptionClickListener {
 
     private RecyclerView rvMedications;
     private PillboxDAO pillboxDAO;
     private int userId;
+    private Medication selectedMedication;
+    private String currentMenuTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,47 +70,89 @@ public class PillboxActivity extends AppCompatActivity {
         loadMedications();
     }
 
+    @Override
+    public void onOptionClick(String option, int position) {
+        if (currentMenuTag == null || selectedMedication == null) {
+            currentMenuTag = null;
+            selectedMedication = null;
+            return;
+        }
+
+        switch (currentMenuTag) {
+            case "medicationOptions":
+                switch (position) {
+                    case 0: // Añadir Fecha de Caducidad
+                        showDatePicker(selectedMedication);
+                        currentMenuTag = null;
+                        selectedMedication = null;
+                        break;
+                    case 1: // Configurar Dosis/Horario
+                        configureDose(selectedMedication);
+                        break;
+                    case 2: // Eliminar del Pastillero
+                        confirmDeletion(selectedMedication);
+                        break;
+                }
+                break;
+
+            case "configureDose":
+                if (position == 0) { // Dosis Diaria
+                    selectHours(selectedMedication, "Todos los días", null);
+                } else { // Días Específicos
+                    selectDays(selectedMedication);
+                }
+                currentMenuTag = null;
+                selectedMedication = null;
+                break;
+
+            case "confirmDeletion":
+                if (position == 0) { // Sí, eliminar
+                    pillboxDAO.removeMedicationFromUser(userId, selectedMedication.getId());
+                    loadMedications();
+                    Toast.makeText(this, selectedMedication.getName() + " eliminado", Toast.LENGTH_SHORT).show();
+                }
+                currentMenuTag = null;
+                selectedMedication = null;
+                break;
+        }
+    }
+
+    private void loadMedications() {
+        List<Medication> medicationList = pillboxDAO.getMedicationsByUserId(userId);
+        MedicationAdapter adapter = new MedicationAdapter(medicationList, this::showMedicationOptions, userId);
+        rvMedications.setAdapter(adapter);
+    }
+
+    private void showMedicationOptions(final Medication medication) {
+        this.selectedMedication = medication;
+        this.currentMenuTag = "medicationOptions";
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Añadir Fecha de Caducidad", "Configurar Dosis/Horario", "Eliminar del Pastillero"));
+        ListBottomSheetFragment bottomSheet = ListBottomSheetFragment.newInstance(medication.getName(), options);
+        bottomSheet.show(getSupportFragmentManager(), currentMenuTag);
+    }
+
+    private void configureDose(final Medication medication) {
+        this.selectedMedication = medication;
+        this.currentMenuTag = "configureDose";
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Dosis Diaria", "Días Específicos"));
+        ListBottomSheetFragment bottomSheet = ListBottomSheetFragment.newInstance("Frecuencia de Toma", options);
+        bottomSheet.show(getSupportFragmentManager(), currentMenuTag);
+    }
+
+    private void confirmDeletion(final Medication medication) {
+        this.selectedMedication = medication;
+        this.currentMenuTag = "confirmDeletion";
+        ArrayList<String> options = new ArrayList<>(Arrays.asList("Sí, eliminar", "Cancelar"));
+        ListBottomSheetFragment bottomSheet = ListBottomSheetFragment.newInstance("¿Eliminar " + medication.getName() + "?", options);
+        bottomSheet.show(getSupportFragmentManager(), currentMenuTag);
+    }
+
     private void requestNotificationPermissions() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.POST_NOTIFICATIONS}, 101);
             }
         }
-    }
-
-    private void loadMedications() {
-        List<Medication> medicationList = pillboxDAO.getMedicationsByUserId(userId);
-        MedicationAdapter adapter = new MedicationAdapter(medicationList, this::showMedicationOptions);
-        rvMedications.setAdapter(adapter);
-    }
-
-    private void showMedicationOptions(final Medication medication) {
-        String[] options = {"Añadir Fecha de Caducidad", "Configurar Dosis/Horario", "Eliminar del Pastillero"};
-
-        new MaterialAlertDialogBuilder(this)
-                .setTitle(medication.getName())
-                .setItems(options, (dialog, which) -> {
-                    switch (which) {
-                        case 0: showDatePicker(medication); break;
-                        case 1: configureDose(medication); break;
-                        case 2: confirmDeletion(medication); break;
-                    }
-                })
-                .show();
-    }
-
-    private void configureDose(final Medication medication) {
-        String[] doseTypes = {"Dosis Diaria", "Días Específicos"};
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Frecuencia de toma")
-                .setItems(doseTypes, (dialog, which) -> {
-                    if (which == 0) {
-                        selectHours(medication, "Todos los días", null);
-                    } else {
-                        selectDays(medication);
-                    }
-                })
-                .show();
     }
 
     private void selectDays(final Medication medication) {
@@ -234,18 +279,6 @@ public class PillboxActivity extends AppCompatActivity {
                 }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
         datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
         datePickerDialog.show();
-    }
-
-    private void confirmDeletion(final Medication medication) {
-        new MaterialAlertDialogBuilder(this)
-                .setTitle("Eliminar")
-                .setMessage("¿Eliminar " + medication.getName() + "?")
-                .setPositiveButton("Sí", (dialog, which) -> {
-                    pillboxDAO.removeMedicationFromUser(userId, medication.getId());
-                    loadMedications();
-                })
-                .setNegativeButton("No", null)
-                .show();
     }
 
     @Override
