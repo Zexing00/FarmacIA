@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Sombra oscura (capa inferior, desplazada) -->
+    <item
+        android:left="4dp"
+        android:top="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#1A000000" /> <!-- Sombra negra muy sutil -->
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Brillo claro (capa intermedia, desplazada) -->
+    <item
+        android:bottom="4dp"
+        android:right="4dp">
+        <shape android:shape="rectangle">
+            <solid android:color="#1AFFFFFF" /> <!-- Brillo blanco muy sutil -->
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Contenido principal del botón (capa superior) -->
+    <item
+        android:bottom="2dp"
+        android:right="2dp"
+        android:left="2dp"
+        android:top="2dp">
+        <shape android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="#F5F5F5"
+                android:endColor="#EAEAEA"
+                android:type="linear" />
+            <corners android:radius="22dp" />
+        </shape>
+    </item>
+
+</layer-list>

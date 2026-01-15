@@ -3,6 +3,8 @@ package com.example.farmacia.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,13 +21,16 @@ import com.example.farmacia.dao.PillboxDAO;
 import com.example.farmacia.model.cima.CimaMedication;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder> {
 
-    private List<CimaMedication> medicationList;
-    private Context context;
-    private int userId;
-    private PillboxDAO pillboxDAO;
+    private final List<CimaMedication> medicationList;
+    private final Context context;
+    private final int userId;
+    private final PillboxDAO pillboxDAO;
+    private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public CimaAdapter(Context context, List<CimaMedication> medicationList, int userId) {
         this.context = context;
@@ -43,12 +48,12 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull CimaViewHolder holder, int position) {
-        CimaMedication medication = medicationList.get(position);
+        final CimaMedication medication = medicationList.get(position);
         holder.tvName.setText(medication.getName());
         holder.tvLaboratory.setText(medication.getLaboratory());
         holder.tvRegistryNumber.setText("Reg: " + medication.getRegistryNumber());
 
-        String leafletUrl = medication.getLeafletUrl();
+        final String leafletUrl = medication.getLeafletUrl();
         if (leafletUrl != null && !leafletUrl.isEmpty()) {
             holder.btnViewLeaflet.setVisibility(View.VISIBLE);
             holder.btnViewLeaflet.setOnClickListener(v -> {
@@ -61,15 +66,19 @@ public class CimaAdapter extends RecyclerView.Adapter<CimaAdapter.CimaViewHolder
 
         // "Add to Pillbox" button setup
         holder.btnAddToPillbox.setOnClickListener(v -> {
-            pillboxDAO.open();
-            boolean success = pillboxDAO.addMedicationToUser(userId, medication.getName(), leafletUrl);
-            pillboxDAO.close();
+            executor.execute(() -> {
+                pillboxDAO.open();
+                final boolean success = pillboxDAO.addMedicationToUser(userId, medication.getName(), leafletUrl);
+                pillboxDAO.close();
 
-            if (success) {
-                Toast.makeText(context, "Añadido al pastillero", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(context, "Ya está en tu pastillero o ha ocurrido un error", Toast.LENGTH_SHORT).show();
-            }
+                new Handler(Looper.getMainLooper()).post(() -> {
+                    if (success) {
+                        Toast.makeText(context, "Añadido al pastillero", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Ya está en tu pastillero o ha ocurrido un error", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         });
 
         // --- Smart Summary button ---

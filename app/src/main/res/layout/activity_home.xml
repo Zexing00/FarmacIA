@@ -4,174 +4,166 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home_gradient_background"
+    android:background="@drawable/gradient_background_blue_pink"
     tools:context=".HomeActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+    <!-- Cabecera -->
+    <TextView
+        android:id="@+id/tvWelcome"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnLogoutIcon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Bienvenido, Usuario" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+    <ImageButton
+        android:id="@+id/btnLogoutIcon"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Cerrar Sesión"
+        android:src="@android:drawable/ic_lock_power_off"
+        app:layout_constraintBottom_toBottomOf="@+id/tvWelcome"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvWelcome"
+        app:tint="@color/white" />
+
+    <!-- Botones Principales (Diseño Neumórfico Avanzado) -->
+    <LinearLayout
+        android:id="@+id/main_buttons_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvWelcome">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHomeCalendar"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:background="@drawable/advanced_neumorphic_background"
+            android:stateListAnimator="@null"
+            android:text="Mi Calendario"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHomePillbox"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/advanced_neumorphic_background"
+            android:stateListAnimator="@null"
+            android:text="Pastillero"
+            android:textAllCaps="false"
+            android:textColor="@color/primary_pink"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHomeSearch"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/advanced_neumorphic_background"
+            android:stateListAnimator="@null"
+            android:text="Buscador"
+            android:textAllCaps="false"
+            android:textColor="#FFC107"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:backgroundTint="@null" />
+
+    </LinearLayout>
+
+    <!-- Contenedor de acciones inferiores (Centrado) -->
+    <LinearLayout
+        android:id="@+id/bottom_actions_container"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/main_buttons_layout">
+
+        <!-- Botón IA (Outlined) -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnHomeIA"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="24dp">
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:padding="12dp"
+            android:text="Consultar IA"
+            android:textColor="@color/white"
+            app:cornerRadius="24dp"
+            app:strokeColor="@color/white" />
 
-            <TextView
-                android:id="@+id/tvWelcome"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:shadowColor="#40000000"
-                android:shadowDy="2"
-                android:shadowRadius="4"
-                android:text="Bienvenido"
-                android:textColor="@android:color/white"
-                android:textSize="32sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <!-- Caja de Gestión -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/management_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginTop="24dp"
+            app:cardBackgroundColor="#99FFFFFF"
+            app:cardCornerRadius="20dp"
+            app:cardElevation="0dp">
 
-            <!-- Botones con efecto Liquid Glass -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnCalendar"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="85dp"
-                android:layout_marginTop="32dp"
-                android:backgroundTint="#99FFFFFF" 
-                android:text="Mi Calendario"
-                android:textAllCaps="false"
-                android:textColor="@color/primary_dark_blue"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:cornerRadius="24dp"
-                app:strokeColor="#B3FFFFFF"
-                app:strokeWidth="1dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvWelcome"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnPillbox"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="85dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#99FFB6C1"
-                android:text="Mi Pastillero"
-                android:textAllCaps="false"
-                android:textColor="@color/primary_dark_blue"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:cornerRadius="24dp"
-                app:strokeColor="#B3FFFFFF"
-                app:strokeWidth="1dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnCalendar"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnMedications"
-                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="0dp"
-                android:layout_height="85dp"
-                android:layout_marginTop="16dp"
-                android:backgroundTint="#99FFEB3B"
-                android:text="Buscador"
-                android:textAllCaps="false"
-                android:textColor="@color/primary_dark_blue"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:cornerRadius="24dp"
-                app:strokeColor="#B3FFFFFF"
-                app:strokeWidth="1dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnPillbox"/>
-
-            <!-- Botón de IA destacado (no glass) -->
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnIA"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
-                android:backgroundTint="@android:color/white"
-                android:paddingHorizontal="32dp"
-                android:paddingVertical="12dp"
-                android:text="Consultar IA"
-                android:textAllCaps="false"
-                android:textColor="@color/primary_dark_blue"
-                android:textSize="16sp"
-                app:cornerRadius="24dp"
-                app:icon="@android:drawable/ic_menu_help"
-                app:iconTint="@color/primary_dark_blue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnMedications" />
-
-            <!-- Gestión de Cuidadores con efecto Glass -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardCuidadores"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:layout_marginBottom="32dp"
-                app:cardBackgroundColor="#99FFFFFF"
-                app:cardCornerRadius="24dp"
-                app:cardElevation="0dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnIA"
-                app:strokeColor="#B3FFFFFF"
-                app:strokeWidth="1dp">
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <LinearLayout
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="20dp">
+                    android:gravity="center"
+                    android:text="Gestión de Pacientes/Cuidadores"
+                    android:textColor="@color/primary_dark_blue"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="16dp"
-                        android:text="Cuidadores y Pacientes"
-                        android:textColor="@color/primary_dark_blue"
-                        android:textStyle="bold"
-                        android:textSize="16sp"/>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnHomeManageCaregivers"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Gestionar Acceso de Cuidadores" />
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnHomeManagePatients"
+                    style="@style/Widget.MaterialComponents.Button.TextButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Ver Pastilleros de Pacientes" />
 
-                        <Button
-                            android:id="@+id/btnShareAccess"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="8dp"
-                            android:layout_weight="1"
-                            android:text="Dar Acceso"
-                            android:textAllCaps="false"
-                            android:textColor="@color/primary_dark_blue"
-                            app:cornerRadius="16dp" />
+            </LinearLayout>
 
-                        <Button
-                            android:id="@+id/btnManagePatients"
-                            style="@style/Widget.MaterialComponents.Button.TextButton"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="8dp"
-                            android:layout_weight="1"
-                            android:text="Mis Pacientes"
-                            android:textAllCaps="false"
-                            android:textColor="@color/primary_dark_blue"
-                            app:cornerRadius="16dp" />
-                    </LinearLayout>
-                </LinearLayout>
-            </com.google.android.material.card.MaterialCardView>
+        </com.google.android.material.card.MaterialCardView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

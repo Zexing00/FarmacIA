@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Relleno semitransparente con tinte azul y más opacidad -->
+    <solid android:color="#992196F3" /> <!-- primary_blue con ~60% de opacidad -->
+
+    <!-- Borde sutil para dar el efecto de "borde de cristal" -->
+    <stroke
+        android:width="1dp"
+        android:color="#80FFFFFF" /> <!-- Blanco con 50% de opacidad -->
+
+    <!-- Esquinas más redondeadas -->
+    <corners android:radius="32dp" />
+
+</shape>

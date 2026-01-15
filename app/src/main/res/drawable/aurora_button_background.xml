@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Sombra interior sutil (capa inferior) -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#1A000000" /> <!-- Sombra negra con 10% de opacidad -->
+            <corners android:radius="24dp" />
+        </shape>
+    </item>
+
+    <!-- Contenido principal del botón (capa superior) -->
+    <item android:bottom="2dp" android:right="1dp" android:left="1dp" android:top="2dp">
+        <shape android:shape="rectangle">
+            <!-- Relleno casi transparente -->
+            <solid android:color="#26FFFFFF" /> <!-- Blanco con 15% de opacidad -->
+
+            <!-- Borde blanco y grueso -->
+            <stroke
+                android:width="2dp"
+                android:color="@android:color/white" />
+
+            <!-- Esquinas redondeadas (un poco menos que la sombra para el efecto) -->
+            <corners android:radius="22dp" />
+        </shape>
+    </item>
+
+</layer-list>

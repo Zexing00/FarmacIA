@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class PillboxActivity extends AppCompatActivity implements ListBottomShee
     private RecyclerView rvMedications;
     private PillboxDAO pillboxDAO;
     private int userId;
+    private String userName;
     private Medication selectedMedication;
     private String currentMenuTag;
 
@@ -56,6 +58,9 @@ public class PillboxActivity extends AppCompatActivity implements ListBottomShee
         Intent intent = getIntent();
         if (intent != null) {
             userId = intent.getIntExtra("USER_ID", -1);
+            // Get user name from SharedPreferences
+            SharedPreferences prefs = getSharedPreferences("FarmacIAPrefs", MODE_PRIVATE);
+            userName = prefs.getString("USER_NAME_" + userId, "Usuario");
         }
 
         if (userId == -1) {
@@ -218,29 +223,30 @@ public class PillboxActivity extends AppCompatActivity implements ListBottomShee
 
         pillboxDAO.updatePillbox(userId, med.getId(), null, finalDose);
 
-        scheduleAlarms(med.getName(), days, hoursMin);
+        scheduleAlarms(med.getName(), userName, days, hoursMin);
 
         loadMedications();
         Toast.makeText(this, "Horario y alarmas configuradas", Toast.LENGTH_SHORT).show();
     }
 
-    private void scheduleAlarms(String medName, ArrayList<Integer> days, ArrayList<Integer[]> hoursMin) {
+    private void scheduleAlarms(String medName, String userName, ArrayList<Integer> days, ArrayList<Integer[]> hoursMin) {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         for (Integer[] hm : hoursMin) {
             if (days == null) { // Everyday
-                scheduleAlarm(alarmManager, medName, -1, hm[0], hm[1]);
+                scheduleAlarm(alarmManager, medName, userName, -1, hm[0], hm[1]);
             } else { // Specific days
                 for (Integer dayOfWeek : days) {
-                    scheduleAlarm(alarmManager, medName, dayOfWeek, hm[0], hm[1]);
+                    scheduleAlarm(alarmManager, medName, userName, dayOfWeek, hm[0], hm[1]);
                 }
             }
         }
     }
 
-    private void scheduleAlarm(AlarmManager am, String medName, int dayOfWeek, int hour, int minute) {
+    private void scheduleAlarm(AlarmManager am, String medName, String userName, int dayOfWeek, int hour, int minute) {
         Intent intent = new Intent(this, AlarmReceiver.class);
         intent.putExtra("MED_NAME", medName);
+        intent.putExtra("USER_NAME", userName);
 
         int requestCode = (medName + dayOfWeek + hour + minute).hashCode();
         PendingIntent pi = PendingIntent.getBroadcast(this, requestCode, intent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
